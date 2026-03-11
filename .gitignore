@@ -1,0 +1,31 @@
+*.bak
+*.old
+*~
+
+# NixOS 自动生成的备份文件 (由 home-manager.backupFileExtension 产生)
+*.backup-before-hm
+
+# --- 敏感与硬件信息 ---
+# 虽然硬件配置通常需要，但如果你想在多台机器间共享 flake，
+# 可以考虑不跟踪 hardware-configuration.nix，或者将其作为引用
+# hardware-configuration.nix 
+
+# 绝对不要提交包含密码哈希、API Key 或秘密信息的特殊文件
+secrets.nix
+*.age
+*.gpg
+
+# --- 编辑器临时文件 ---
+# Neovim / Vim
+.netrwhist
+*.swp
+*.swo
+Session.vim
+
+# --- 磁盘与系统遗留 ---
+# 如果你之前在目录下运行过测试脚本产生的输出
+result
+result-*
+
+# --- Git / OS 相关 ---
+.direnv/
