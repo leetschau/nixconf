@@ -159,7 +159,7 @@
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    substituters = [ "https://mirrors.tuna.tsinghua.edu.cn/nixos" "https://cache.nixos.org" ];
+    substituters = [ "https://cache.nixos.org" ];
     auto-optimise-store = true;
   };
 
