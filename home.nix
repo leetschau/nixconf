@@ -5,11 +5,13 @@
 
   home.sessionPath = [
     "$HOME/.local/bin"
+    "$HOME/.local/share/go/bin"
   ];
 
   home.sessionVariables = {
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
+    GOPATH = "$HOME/.local/share/go";
   };
 
   programs.home-manager.enable = true;
@@ -55,6 +57,13 @@
     enable = true;
     enableFishIntegration = true;
   };
+
+  programs.zellij = {
+    enable = true;
+    enableFishIntegration = false;
+  };
+
+  xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
 
   programs.git = {
     enable = true;
