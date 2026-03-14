@@ -8,12 +8,38 @@
   ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
   };
 
   programs.home-manager.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    withNodeJs = true;
+    withPython3 = true;
+    extraPackages = with pkgs; [
+      # Build tools for Tree-sitter and other plugins
+      gcc
+      gnumake
+      unzip
+      wget
+      curl
+      # Common utilities used by Neovim plugins
+      fd
+      ripgrep
+      lua-language-server
+      stylua
+      # Language environments for LSP/formatters/linters
+      python3
+      go
+      cargo
+      rustc
+    ];
+  };
 
   programs.fzf = {
     enable = true;
@@ -78,7 +104,6 @@
       hx = "~/.local/opt/helix/hx";
       kak = "~/.local/opt/kakoune/src/kak";
       mm = "micromamba";
-      vi = "nvim";
       pa = "sudo pacman";
       pd = "podman";
       py = "python3";
@@ -96,7 +121,6 @@
 
   home.packages = with pkgs; [
     pkgs.comma
-    ripgrep
     miller
     xan
     jq
