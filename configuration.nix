@@ -104,14 +104,15 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    vim
-    wget
-    neovim
+    curl
+    fish
     git
     htop
-    curl
+    neovim
     tree
-    fish
+    unzip
+    vim
+    wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

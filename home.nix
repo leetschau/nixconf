@@ -27,18 +27,18 @@
       # Build tools for Tree-sitter and other plugins
       gcc
       gnumake
-      unzip
-      wget
-      curl
       # Common utilities used by Neovim plugins
+      curl
       fd
       ripgrep
-      lua-language-server
       stylua
+      unzip
+      wget
       # Language environments for LSP/formatters/linters
-      python3
-      go
       cargo
+      go
+      lua-language-server
+      python3
       rustc
     ];
   };
@@ -129,11 +129,14 @@
   };
 
   home.packages = with pkgs; [
-    pkgs.comma
-    miller
-    xan
-    jq
+    fd
     htop
+    jq
+    miller
+    opencode
+    pkgs.comma
     pkgs.gemini-cli
+    ripgrep
+    xan
   ];
 }
