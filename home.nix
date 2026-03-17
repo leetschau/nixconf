@@ -51,6 +51,7 @@
   programs.zoxide = {
     enable = true;
     enableFishIntegration = true;
+    options = [ "--cmd j" ];
   };
 
   programs.starship = {
@@ -95,6 +96,7 @@
     shellAliases = {
       ll = "ls -l";
       ".." = "cd ..";
+      "..." = "cd ../..";
       nd = "nix develop";
       nixup = "sudo HTTP_PROXY=http://10.160.43.82:7897 HTTPS_PROXY=http://10.160.43.82:7897 nixos-rebuild switch --flake ~/.config/nixos#nix2505";
       userup = "HTTP_PROXY=http://10.160.43.82:7897 HTTPS_PROXY=http://10.160.43.82:7897 home-manager switch --flake ~/.config/nixos#leo";
