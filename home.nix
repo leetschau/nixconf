@@ -64,11 +64,6 @@
     enableFishIntegration = false;
   };
 
-  xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
-
-  xdg.configFile."pet/config.toml".source = ./pet/config.toml;
-  xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
-
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -142,7 +137,16 @@
     pet
     pkgs.comma
     pkgs.gemini-cli
+    ranger
     ripgrep
+    tdf
     xan
   ];
+
+  xdg.configFile."pet/config.toml".source = ./pet/config.toml;
+  xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
+
+  xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
+
+  xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
 }
