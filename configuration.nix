@@ -42,7 +42,7 @@
   services.cloud-init.enable = false;
 
   # Set your time zone.
-  time.timeZone = "Asia/HongKong";
+  time.timeZone = "Asia/Shanghai";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
