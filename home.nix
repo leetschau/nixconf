@@ -12,9 +12,77 @@
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
     GOPATH = "$HOME/.local/share/go";
+    HTTP_PROXY = "http://10.160.43.82:7897";
+    HTTPS_PROXY = "http://10.160.43.82:7897";
   };
 
   programs.home-manager.enable = true;
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      side-by-side = true;
+      navigate = true;
+      dark = true;
+    };
+  };
+
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set -g fish_greeting ""
+      fish_vi_key_bindings
+    '';
+    shellAliases = {
+      ll = "ls -l";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      nd = "nix develop";
+      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#nix2505";
+      userup = "home-manager switch --flake ~/.config/nixos#leo";
+    };
+    shellAbbrs = {
+      ga = "git add -A";
+      gs = "git status";
+      gci = "git commit -m";
+      gd = "git diff";
+      gl = "git log --stat --decorate";
+      glg = "git log --all --decorate --oneline --graph";
+      gco = "git checkout";
+      gph = "git push";
+      gpl = "git pull";
+      che = "chezmoi";
+      mm = "micromamba";
+      pd = "podman";
+      py = "python3";
+      op = "rifle";
+      ra = "ranger";
+      l = "ls -la";
+      lt = "ls -lt";
+      tl = "tmux ls";
+      ta = "tmux -u attach -t";
+      tn = "tmux -u new -A -s";
+      va = "vagrant";
+      zl = "zellij";
+    };
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+    settings = {
+      user.name = "Leo";
+      user.email = "leetschau@gmail.com";
+      init.defaultBranch = "master";
+      credential.helper = "cache";
+    };
+  };
 
   programs.neovim = {
     enable = true;
@@ -43,17 +111,6 @@
     ];
   };
 
-  programs.fzf = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-    options = [ "--cmd j" ];
-  };
-
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -64,79 +121,22 @@
     enableFishIntegration = false;
   };
 
-  programs.git = {
+  programs.zoxide = {
     enable = true;
-    lfs.enable = true;
-    settings = {
-      user.name = "Leo";
-      user.email = "leetschau@gmail.com";
-      init.defaultBranch = "master";
-      credential.helper = "cache";
-    };
-  };
-
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-    options = {
-      side-by-side = true;
-      navigate = true;
-      dark = true;
-    };
-  };
-
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set -g fish_greeting ""
-      fish_vi_key_bindings
-    '';
-    shellAliases = {
-      ll = "ls -l";
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      nd = "nix develop";
-      nixup = "sudo HTTP_PROXY=http://10.160.43.82:7897 HTTPS_PROXY=http://10.160.43.82:7897 nixos-rebuild switch --flake ~/.config/nixos#nix2505";
-      userup = "HTTP_PROXY=http://10.160.43.82:7897 HTTPS_PROXY=http://10.160.43.82:7897 home-manager switch --flake ~/.config/nixos#leo";
-    };
-    shellAbbrs = {
-      ga = "git add -A";
-      gs = "git status";
-      gci = "git commit -m";
-      gd = "git diff";
-      gl = "git log --stat --decorate";
-      glg = "git log --all --decorate --oneline --graph";
-      gco = "git checkout";
-      gph = "git push";
-      gpl = "git pull";
-      che = "chezmoi";
-      hx = "~/.local/opt/helix/hx";
-      kak = "~/.local/opt/kakoune/src/kak";
-      mm = "micromamba";
-      pa = "sudo pacman";
-      pd = "podman";
-      py = "python3";
-      op = "rifle";
-      ra = "ranger";
-      l = "ls -la";
-      lt = "ls -lt";
-      tl = "tmux ls";
-      ta = "tmux -u attach -t";
-      tn = "tmux -u new -A -s";
-      va = "vagrant";
-      zl = "zellij";
-    };
+    enableFishIntegration = true;
+    options = [ "--cmd j" ];
   };
 
   home.packages = with pkgs; [
+    comma
     fd
+    gemini-cli
     htop
     jq
     miller
+    nodejs
     opencode
     pet
-    pkgs.comma
-    pkgs.gemini-cli
     ranger
     ripgrep
     tdf
