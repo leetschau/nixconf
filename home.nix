@@ -66,6 +66,9 @@
 
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
 
+  xdg.configFile."pet/config.toml".source = ./pet/config.toml;
+  xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
+
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -136,6 +139,7 @@
     jq
     miller
     opencode
+    pet
     pkgs.comma
     pkgs.gemini-cli
     ripgrep

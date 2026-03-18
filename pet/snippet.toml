@@ -1,0 +1,546 @@
+
+[[Snippets]]
+  Description = "show all databases in mysql"
+  Output = ""
+  Tag = ["sql", "mysql"]
+  command = "mycli -h<host=172.16.72.149> -P<port=3306> -u<user=rd_user> -p<password='NTHXDF7czYwi'> -e 'show databases'"
+
+[[Snippets]]
+  Description = "Connect to a MySQL Database"
+  Output = ""
+  Tag = ["sql", "mysql", "mycli"]
+  command = "mycli -h172.16.72.149 -urd_user -p'NTHXDF7czYwi' <dbname>"
+
+[[Snippets]]
+  Description = "List tables in a MySQL Database"
+  Output = ""
+  Tag = ["sql", "mysql"]
+  command = "mycli -h<host=172.16.72.149> -P<port=3306> -u<user=rd_user> -p<password='NTHXDF7czYwi'> <dbname> -e 'show tables'"
+
+[[Snippets]]
+  Description = "Get MySQL Table Size (MB)"
+  Output = ""
+  Tag = ["sql", "mysql", "size"]
+  command = "mycli -h<host=172.16.72.149> -u<user=rd_user> -p<password='NTHXDF7czYwi'> -e 'SELECT table_name AS `Table`, round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB` FROM information_schema.TABLES WHERE table_schema = \"<DB_NAME=peptest>\" AND table_name = \"<TABLE_NAME>\"'"
+
+[[Snippets]]
+  Description = "Date offset calculation"
+  Output = ""
+  Tag = ["date", "offset"]
+  command = "date +'<format=%Y-%m-%d>' -d '<direction=|_+_||_-_|><num=16> <unit=|_weeks_||_days_||_months_||_years_|>'"
+
+[[Snippets]]
+  Description = "SQL片段：前一天"
+  Output = ""
+  Tag = ["sql", "date"]
+  command = "date_sub(CURRENT_DATE, 1)"
+
+[[Snippets]]
+  Description = "SQL片段：查询语句框架"
+  Output = ""
+  Tag = ["sql", "select"]
+  command = "SELECT FROM WHERE INNER JOIN ON"
+
+[[Snippets]]
+  Description = "51talk 学号"
+  Output = ""
+  Tag = ["51talk", "personal"]
+  command = "echo U84847617750 | xclip -selection clipboard"
+
+[[Snippets]]
+  Description = "Query 51talk user info"
+  Output = ""
+  Tag = ["51talk", "user"]
+  command = "select stdt_id, stdt_no, nick_name, real_name, wx_id, sex, province, city, ori_grade, cur_grade, pay_order_flag, tot_pay_ord_amt, last_tmk_name, last_cc_name, last_ss_name, end_count from dm.dm_stdt_tot_uvc_d where partition_id = date_sub(CURRENT_DATE, 1) and stdt_id = '<stdt_id>'"
+
+[[Snippets]]
+  Description = "Query 51talk CC info"
+  Output = ""
+  Tag = ["51talk", "CC"]
+  command = "select name_cn, crm_name, work_no, (job_age / 30) working_month, state, post_state, dept1_name, dept2_name, dept3_name, dept4_name, dept5_name, dept6_name, dept7_name, state, job_type, job_level, edu, tot_leads_num, pay_leads_num from dm.dm_sal_cc_tot_uvc_d where partition_id = date_sub(CURRENT_DATE, 1) and name_cn = '<name>'"
+
+[[Snippets]]
+  Description = "SQL: Sample from specific table"
+  Output = ""
+  Tag = ["sql", "sample"]
+  command = "select <column-name> from <table-name> order by rand() limit <row_num=10000>;"
+
+[[Snippets]]
+  Description = "String-Text compatible in GHCi"
+  Output = ""
+  Tag = ["haskell", "ghci", "string"]
+  command = ":set -XOverloadedStrings"
+
+[[Snippets]]
+  Description = "join zerotier network Stardust"
+  Output = ""
+  Tag = ["zerotier", "network"]
+  command = "sudo zerotier-cli join a0cbf4b62af9b50f"
+
+[[Snippets]]
+  Description = "update wallpaper of i3wm manually"
+  Output = ""
+  Tag = ["wallpaper", "i3wm"]
+  command = "nitrogen --set-zoom-fill --random ~/Pictures/wallpapers"
+
+[[Snippets]]
+  Description = "set proxy in fish shell"
+  Output = ""
+  Tag = ["fish", "proxy"]
+  command = "set -x http_proxy <ip-addr=http://192.168.1.123:7899> && set -x https_proxy $http_proxy"
+
+[[Snippets]]
+  Description = "get dataset overall statistics"
+  Output = ""
+  Tag = ["miller", "csv", "stats", "mlr"]
+  command = "mlr --c2p --from <input>.csv summary -a field_type,count,distinct_count,null_count,minlen,maxlen"
+
+[[Snippets]]
+  Description = "value-count/histogram on the specific column"
+  Output = ""
+  Tag = ["miller", "mlr", "csv", "column", "value-count"]
+  command = "mlr --c2p --from <input>.csv count -g <column-name>"
+
+[[Snippets]]
+  Description = "filter rows by cell value in the specific column"
+  Output = ""
+  Tag = ["csv", "jsonl", "json", "row", "miller", "filter"]
+  command = "mlr --l2x --from <input>.jsonl filter '$<col-name> > 9 && $<col-name2> == 0 || $<col-name3> != 0'"
+
+[[Snippets]]
+  Description = "filter rows by column value, e.g.: label == 0 or label > 0"
+  Output = ""
+  Tag = ["xan", "filter", "csv"]
+  command = "xan filter '<filter-expr>'"
+
+[[Snippets]]
+  Description = "convert Parquet file to TSV file with duckdb"
+  Output = ""
+  Tag = ["parquet", "csv", "tsv", "duckdb", "convert"]
+  command = "duckdb :memory: \"COPY (SELECT * FROM READ_PARQUET('<input>.parquet')) TO '<output>.tsv' (HEADER, DELIMITER '\\t');\""
+
+[[Snippets]]
+  Description = "Convert Parquet file to JSON lines with duckdb"
+  Output = ""
+  Tag = ["convert", "parquet", "jsonl", "duckdb"]
+  command = "duckdb :memory: \"COPY (SELECT * FROM READ_PARQUET('<input>.parquet')) TO '<output>.ndjson';\""
+
+[[Snippets]]
+  Description = "Change keyboard layout: swap ESC & Capslock, Win & Ctrl"
+  Output = ""
+  Tag = ["keyboard", "layout", "swap", "esc", "ctrl", "capslock"]
+  command = "setxkbmap -option caps:swapescape -option ctrl:swap_lwin_lctl -option ctrl:swap_rwin_rctl"
+
+[[Snippets]]
+  Description = "List available version of the language"
+  Output = ""
+  Tag = ["mise", "install", "language"]
+  command = "mise list-remote <lang=python>"
+
+[[Snippets]]
+  Description = "Install a language at specific version"
+  Output = ""
+  Tag = ["mise", "install", "language", "version"]
+  command = "mise use -g <lang=|_haskell_||_java_||_julia_||_nodejs_||_opam_||_python_||_scala_|>@<version=3.13>"
+
+[[Snippets]]
+  Description = "Disable mouse support of fzf in fish"
+  Output = ""
+  Tag = ["fzf", "mouse", "fish"]
+  command = "set --universal FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS --no-mouse"
+
+[[Snippets]]
+  Description = "Initialize a Python Project with <type> and <version>"
+  Output = ""
+  Tag = ["python", "initialize", "project"]
+  command = "uv init --name <name=myapp> --<type=|_app_||_script_||_package_|> --vcs git -p <version=3.13>"
+
+[[Snippets]]
+  Description = "Install chezmoi"
+  Output = ""
+  Tag = ["install", "chezmoi"]
+  command = "eget twpayne/chezmoi"
+
+[[Snippets]]
+  Description = "Install Python tool uv"
+  Output = ""
+  Tag = ["install", "uv", "python"]
+  command = "eget astral-sh/uv -a musl"
+
+[[Snippets]]
+  Description = "Install mise"
+  Output = ""
+  Tag = ["install", "mise"]
+  command = "eget jdx/mise -a ^xz -a ^gz -a ^zst -a ^musl"
+
+[[Snippets]]
+  Description = "Install aqua itself and install tools with it"
+  Output = ""
+  Tag = ["aqua", "tools", "command-line"]
+  command = "eget aquaproj/aqua\naqua init\naqua g -i\naqua i\naqua exec <tool=nvim>"
+
+[[Snippets]]
+  Description = "Install fzf"
+  Output = ""
+  Tag = ["fzf", "tools", "command-line"]
+  command = "eget junegunn/fzf"
+
+[[Snippets]]
+  Description = "Build a new Clojure project"
+  Output = ""
+  Tag = ["clojure", "new", "project"]
+  command = "clojure -Tclj-new app :name <orgname=clouds>/<appname=myapp>"
+
+[[Snippets]]
+  Description = "Calculate frequency/value-count of a column in the CSV/TSV file'"
+  Output = ""
+  Tag = ["csv", "tsv", "xan", "value-count"]
+  command = "xan freq -s <column-name> <input.csv>"
+
+[[Snippets]]
+  Description = "Calculate frequency/value-count of a column in the JSON/JSONL file'"
+  Output = ""
+  Tag = ["json", "jsonl", "mlr", "value-count"]
+  command = "mlr --from <input.csv> --l2x count -g <column-name> "
+
+[[Snippets]]
+  Description = "Concat CSV/TSV files by row."
+  Output = ""
+  Tag = ["xan", "concat", "row", "csv", "tsv"]
+  command = "xan cat rows <input=**/*.csv>"
+
+[[Snippets]]
+  Description = "Concat CSV/TSV files by columns."
+  Output = ""
+  Tag = ["xan", "csv", "tsv", "concat", "columns"]
+  command = "xan cat columns <input1.csv> <input2.csv>"
+
+[[Snippets]]
+  Description = "Stop firewall on Fedora 41"
+  Output = ""
+  Tag = ["firewall", "fedora"]
+  command = "sudo systemctl stop firewalld"
+
+[[Snippets]]
+  Description = "Install babashka via eget"
+  Output = ""
+  Tag = ["eget", "babashka", "bb"]
+  command = "eget babashka/babashka -a static"
+
+[[Snippets]]
+  Description = "Publish a public gist on github"
+  Output = ""
+  Tag = ["github", "gist", "publish", "public"]
+  command = "gh gist create --public <gist-file> -d '<desc texts>'"
+
+[[Snippets]]
+  Description = "starts a Web server providing texts and files sharing functions"
+  Output = ""
+  Tag = ["file", "text", "lan", "sharing"]
+  command = "gh gist view 25c37cd63df6dba7c52194e62a08dcad > ~/.local/bin/sharing-ft\nchmod 755 ~/.local/bin/sharing-ft\nsharing-ft -h"
+
+[[Snippets]]
+  Description = "List all gists in my account"
+  Output = ""
+  Tag = ["github", "gist", "list"]
+  command = "gh gist list -L <no=10>"
+
+[[Snippets]]
+  Description = "Install GitHub’s official command line tool"
+  Output = ""
+  Tag = ["github", "command-line", "install", "eget"]
+  command = "eget cli/cli"
+
+[[Snippets]]
+  Description = "Add user to sudoer group on Ubuntu"
+  Output = ""
+  Tag = ["ubuntu", "sudo", "user"]
+  command = "sudo usermod -aG sudo <user-name=leo>"
+
+[[Snippets]]
+  Description = "show headers of the CSV/TSV file"
+  Output = ""
+  Tag = ["csv", "tsv", "header"]
+  command = "xan h <input.csv>"
+
+[[Snippets]]
+  Description = "Pretty print first <number> rows of CSV/TSV file"
+  Output = ""
+  Tag = ["csv", "tsv", "view", "xan"]
+  command = "xan v -l <number=3> <input.csv>"
+
+[[Snippets]]
+  Description = "Get <len> rows from <start> from CSV/TSV file"
+  Output = ""
+  Tag = ["csv", "tsv", "slice"]
+  command = "xan slice --start <start=1> --len <number=3> <input.csv>"
+
+[[Snippets]]
+  Description = "Get the <index>th row (0-based) from CSV/TSV file"
+  Output = ""
+  Tag = ["xan", "csv", "tsv", "row", "slice"]
+  command = "xan slice -i <index=0> <input.csv>"
+
+[[Snippets]]
+  Description = "Select the <index>th column (0-based) of the CSV/TSV file"
+  Output = ""
+  Tag = ["xan", "csv", "tsv", "column", "select"]
+  command = "xan select <index=0> <input=input.csv>"
+
+[[Snippets]]
+  Description = "Pretty print the row started at <start> with very long field in CSV/TSV file"
+  Output = ""
+  Tag = ["csv", "tsv", "long field", "print"]
+  command = "xan slice --start <start=1> --len <number=3> <input.csv> | mlr --c2x cat"
+
+[[Snippets]]
+  Description = "download huggingface dataset into local directory"
+  Output = ""
+  Tag = ["huggingface", "dataset", "download"]
+  command = "uv run huggingface-cli download --repo-type dataset --local-dir <target-dir=data> <dataset-uri>"
+
+[[Snippets]]
+  Description = "generate pet completion for fish shell"
+  Output = ""
+  Tag = ["fish", "completion", "pet"]
+  command = "pet completion fish > ~/.config/fish/completions/pet.fish"
+
+[[Snippets]]
+  Description = "Sample <number> items from CSV/TSV file"
+  Output = ""
+  Tag = ["sample", "csv", "tsv", "xan"]
+  command = "xan sample <number=3> <input.csv>"
+
+[[Snippets]]
+  Description = "Start a simple HTTP server with Python"
+  Output = ""
+  Tag = ["http", "server", "python"]
+  command = "python -m http.server <port=4123>"
+
+[[Snippets]]
+  Description = "Convert a CSV file to stdout or file (with `-o` option) in format JSON/JSONL/XLSX/TSV/Markdown"
+  Output = ""
+  Tag = ["xan", "convert", "csv", "tsv", "json", "jsonl", "xlsx", "markdown"]
+  command = "xan to <format=jsonl> <input.csv>"
+
+[[Snippets]]
+  Description = "Convert JSON/JSONL/XLSX/TSV/Markdown file to CSV string (in stdout) or file (with `-o` option)"
+  Output = ""
+  Tag = ["xan", "convert", "csv", "tsv", "json", "jsonl", "xlsx", "markdown"]
+  command = "xan from [-f <format=jsonl>] <input>"
+
+[[Snippets]]
+  Description = "List commands with tag <tag> in one line each"
+  Output = ""
+  Tag = ["pet", "list", "tag"]
+  command = "pet list --oneline -t <tag=csv>"
+
+[[Snippets]]
+  Description = "Install pet with eget"
+  Output = ""
+  Tag = ["eget", "install", "pet"]
+  command = "eget knqyf263/pet -a tar"
+
+[[Snippets]]
+  Description = "Set proxy for scoop (no `http://` prefix)"
+  Output = ""
+  Tag = ["Windows", "scoop", "proxy"]
+  command = "scoop config proxy 127.0.0.1:7897"
+
+[[Snippets]]
+  Description = "List all scoop configurations"
+  Output = ""
+  Tag = ["Windows", "scoop", "configuration"]
+  command = "scoop config"
+
+[[Snippets]]
+  Description = "Update Powershell 7 (run in Powershell 5.1)"
+  Output = ""
+  Tag = ["Windows", "scoop", "powershell", "update"]
+  command = "scoop update pwsh"
+
+[[Snippets]]
+  Description = "Reset keyboard mapping"
+  Output = ""
+  Tag = ["linux", "keyboard", "mapping"]
+  command = "setxkbmap -option"
+
+[[Snippets]]
+  Description = "Print current keyboard mappings"
+  Output = ""
+  Tag = ["linux", "keyboard", "mapping"]
+  command = "setxkbmap -print"
+
+[[Snippets]]
+  Description = "List keyboard mappings between logic and physical modifiers"
+  Output = ""
+  Tag = ["linux", "keyboard", "mapping"]
+  command = "xmodmap -pm"
+
+[[Snippets]]
+  Description = "Print contents of X event, mainly from keyboard and mouse, install with apt or dnf"
+  Output = ""
+  Tag = ["linux", "keyboard", "X", "event"]
+  command = "xev"
+
+[[Snippets]]
+  Description = "List available font faimilies"
+  Output = ""
+  Tag = ["linux", "font", "family"]
+  command = "fc-list : family"
+
+[[Snippets]]
+  Description = "Detection file encoding, install with `dnf` or `apt`."
+  Output = ""
+  Tag = ["dnf", "encoding", "detect", "apt"]
+  command = "uchardet <input.txt>"
+
+[[Snippets]]
+  Description = "Convert encoding, detect original encoding with uchardet."
+  Output = ""
+  Tag = ["encoding", "convert", "linux"]
+  command = "iconv -f gb18030 -t utf8 <input.txt> -o <out.txt>"
+
+[[Snippets]]
+  Description = "Convert Windows line ending to Unix line ending"
+  Output = ""
+  Tag = ["linux", "line-ending", "windows", "convert"]
+  command = "dos2unix <input.txt>"
+
+[[Snippets]]
+  Description = "Install Nerd Fonts on Linux"
+  Output = ""
+  Tag = ["font", "nerd", "linux"]
+  command = "eget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/3270.zip -d --to ~/.local/share/fonts\ncd ~/.local/share/fonts && unzip 3270.zip && fc-cache -fv"
+
+[[Snippets]]
+  Description = "shuffle rows in CSV file"
+  Output = ""
+  Tag = ["xan", "shuffle", "csv"]
+  command = "xan shuffle <input.csv>"
+
+[[Snippets]]
+  Description = "Install xan wia eget"
+  Output = ""
+  Tag = ["xan", "csv", "eget"]
+  command = "eget medialab/xan"
+
+[[Snippets]]
+  Description = "Load an image from a tarball"
+  Output = ""
+  Tag = ["podman", "container", "load"]
+  command = "podman load -i <image-tarball=arch.tgz>"
+
+[[Snippets]]
+  Description = "Save an image to a file"
+  Output = ""
+  Tag = ["podman", "save", "image"]
+  command = "podman save <imgurl=docker.io/library/archlinux> | gzip > <imgtarball=arch-origin.tgz>"
+
+[[Snippets]]
+  Description = "Create Arch container"
+  Output = ""
+  Tag = ["distrobox", "container", "linux"]
+  command = "distrobox create --name arch --image archlinux:latest"
+
+[[Snippets]]
+  Description = "Create Ubuntu 22.04 container"
+  Output = ""
+  Tag = ["distrobox", "container", "linux"]
+  command = "distrobox create --name ub22 --image ubuntu:22.04 --init --additional-packages 'systemd git fish build-essential gcc'"
+
+[[Snippets]]
+  Description = "Install lein on Linux"
+  Output = ""
+  Tag = ["eget", "leiningen", "clojure", "linux"]
+  command = "eget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein"
+
+[[Snippets]]
+  Description = "Donwload a folder in a github repo"
+  Output = ""
+  Tag = ["github", "folder", "download"]
+  command = "gitsnip <git-repo=https://github.com/meta-llama/PurpleLlama> <remote-folder=CybersecurityBenchmarks/datasets/prompt_injection> <output-folder=purplellama>"
+
+[[Snippets]]
+  Description = "Install license generator"
+  Output = ""
+  Tag = ["license", "generator"]
+  command = "eget intincrab/license-generator"
+
+[[Snippets]]
+  Description = "generate a license file in current folder"
+  Output = ""
+  Tag = ["license", "generator"]
+  command = "license-generator"
+
+[[Snippets]]
+  Description = "View a gist on github by its ID from `gh gist list [-L 10]`"
+  Output = ""
+  Tag = ["github", "gist", "list", "view"]
+  command = "gh gist view <id>"
+
+[[Snippets]]
+  Description = "download audio from youtube"
+  Output = ""
+  Tag = ["youtube", "audio", "mp3"]
+  command = "yt-dlp --extract-audio --audio-format mp3 <url=https://www.youtube.com/watch?v=s3AO2hEDiSU>"
+
+[[Snippets]]
+  Description = "search all file/folders in <root-folder> whose reading/writing privileges are <perm>"
+  Output = ""
+  Tag = ["shell", "permission", "search"]
+  command = "find <root-folder> -perm <perm=777> -type <type=|_d_||_f_|>"
+
+[[Snippets]]
+  Description = "Replace \"old-str\" with \"new-str\" in \"label\" column in file \"input.csv\""
+  Output = ""
+  Tag = ["replace", "mlr", "column"]
+  command = "mlr --csv put '$<label> = $<label> == \"<old-str>\" ? \"<new-str>\" : $<label>' <input>.csv > <output>.csv"
+
+[[Snippets]]
+  Description = "Format all Python codes of the project. Install: `mise use -g pipx:yapf`. Abbr: `yapf -rie '.venv' .`"
+  Output = ""
+  Tag = ["format", "python", "yapf"]
+  command = "yapf --recursive --in-place --exclude '.venv' ."
+
+[[Snippets]]
+  Description = "Count the number of source code lines in the target directory"
+  Output = ""
+  Tag = ["cloc", "stats", "lines"]
+  command = "cloc --vcs=git --by-file-by-lang <folder=.>"
+
+[[Snippets]]
+  Description = "Install source codes line counter tool cloc"
+  Output = ""
+  Tag = ["cloc", "source", "code", "lines"]
+  command = "eget AlDanial/cloc -a pl"
+
+[[Snippets]]
+  Description = "Login as common user (bob) to a service (service_a) in a docker compose group and start bash shell"
+  Output = ""
+  Tag = ["docker", "shell", "attach"]
+  command = "docker compose -f <docker-compose-folder=.>/docker-compose.yml exec <service-name=service_a> sudo -u <username=bob> sh -c 'cd && bash'"
+
+[[Snippets]]
+  Description = "Upload a new (public) gist to github.com"
+  Output = ""
+  Tag = ["github", "gist", "create"]
+  command = "gh gist create [--public] <script-file-path> -d <description>"
+
+[[Snippets]]
+  Description = "update a gist in your EDITOR (neovim for me)"
+  Output = ""
+  Tag = ["update", "gist", "github"]
+  command = "gh gist edit <gist-id>"
+
+[[Snippets]]
+  Description = "Search gists with <pattern>"
+  Output = "ID                                DESCRIPTION  FILES   VISIBILITY  UPDATED\n039dfc4f51e7875f8585b2037a858ed6  description  1 file  secret      about 2 minutes ago"
+  Tag = ["search", "gist", "github"]
+  command = "gh gist list --filer <pattern>"
+
+[[Snippets]]
+  Description = "preview quarto markdown file on the fly in browser"
+  Output = ""
+  Tag = ["quarto", "preview"]
+  command = "quarto preview <report-file>.qmd --host <public-ip=0.0.0.0> --port 4200 --no-browser"
