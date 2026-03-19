@@ -33,6 +33,9 @@
     interactiveShellInit = ''
       set -g fish_greeting ""
       fish_vi_key_bindings
+      function take --description "Create directory and cd into it"
+        mkdir -p $argv[1]; and cd $argv[1]
+      end
     '';
     shellAliases = {
       ll = "ls -l";
@@ -60,9 +63,6 @@
       ra = "ranger";
       l = "ls -la";
       lt = "ls -lt";
-      tl = "tmux ls";
-      ta = "tmux -u attach -t";
-      tn = "tmux -u new -A -s";
       va = "vagrant";
       zl = "zellij";
     };
@@ -129,6 +129,7 @@
 
   home.packages = with pkgs; [
     comma
+    dos2unix
     fd
     gemini-cli
     htop
