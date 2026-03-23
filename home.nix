@@ -128,6 +128,7 @@
   };
 
   home.packages = with pkgs; [
+    aichat
     comma
     dos2unix
     fd
@@ -139,6 +140,7 @@
     opencode
     pet
     ranger
+    rclone
     ripgrep
     tdf
     xan
