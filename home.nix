@@ -127,9 +127,10 @@
     options = [ "--cmd j" ];
   };
 
+  programs.nix-index-database.comma.enable = true;
+
   home.packages = with pkgs; [
     aichat
-    comma
     dos2unix
     fd
     gemini-cli
@@ -152,4 +153,5 @@
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
 
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
+
 }

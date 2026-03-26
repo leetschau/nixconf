@@ -8,9 +8,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-index-database, ... }@inputs: {
     # Note: `nix2505` is defined in networking.hostName of configuration.nix
     nixosConfigurations.nix2505 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -25,6 +30,7 @@
       extraSpecialArgs = { inherit inputs; };
       modules = [
         ./home.nix
+        nix-index-database.homeModules.nix-index
       ];
     };
   };
