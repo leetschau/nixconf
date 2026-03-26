@@ -11,8 +11,7 @@
 # hardware-configuration.nix 
 
 # 绝对不要提交包含密码哈希、API Key 或秘密信息的特殊文件
-secrets.nix
-*.age
+# secrets.nix is used by agenix and only contains PUBLIC keys, so it is safe to track.
 *.gpg
 
 # --- 编辑器临时文件 ---

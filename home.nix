@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config, inputs, ... }: {
   home.username = "leo";
   home.homeDirectory = "/home/leo";
   home.stateVersion = "24.11"; 
@@ -130,7 +130,10 @@
   programs.nix-index-database.comma.enable = true;
 
   home.packages = with pkgs; [
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    age
     aichat
+    bat
     dos2unix
     fd
     gemini-cli
@@ -153,5 +156,11 @@
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
 
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
+
+  age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
+  age.secrets."rclone.conf" = {
+    file = ./secrets/rclone.conf.age;
+    path = "${config.home.homeDirectory}/.config/rclone/rclone.conf";
+  };
 
 }

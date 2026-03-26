@@ -13,9 +13,14 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-index-database, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nix-index-database, agenix, ... }@inputs: {
     # Note: `nix2505` is defined in networking.hostName of configuration.nix
     nixosConfigurations.nix2505 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -31,6 +36,7 @@
       modules = [
         ./home.nix
         nix-index-database.homeModules.nix-index
+        agenix.homeManagerModules.default
       ];
     };
   };
