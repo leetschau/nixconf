@@ -37,11 +37,35 @@
 
     defaultGateway = "10.160.43.1";
     nameservers = [ "10.160.31.231" "8.8.8.8" ];
-    firewall.allowedTCPPorts = [ 4444 5555 6666 7777 ];
+    firewall.allowedTCPPorts = [
+      4444 5555 6666 7777  # for custom services
+    ];
   };
   services.cloud-init.enable = false;
 
-  # Set your time zone.
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+
+    settings = {
+      global = {
+        "min protocol" = "SMB2";
+        workgroup = "WORKGROUP";
+        "server string" = "nixos-samba";
+        security = "user";
+        "map to guest" = "bad user";
+      };
+
+      leo = {
+        path = "/home/leo";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "valid users" = "leo";
+      };
+    };
+  };
+
   time.timeZone = "Asia/Shanghai";
 
   # Configure network proxy if necessary
