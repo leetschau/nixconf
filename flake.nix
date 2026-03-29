@@ -21,8 +21,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nix-index-database, agenix, ... }@inputs: {
-    # Note: `nix2505` is defined in networking.hostName of configuration.nix
-    nixosConfigurations.nix2505 = nixpkgs.lib.nixosSystem {
+    # Note: `nix-e7450` is defined in networking.hostName of configuration.nix
+    nixosConfigurations.nix-e7450 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [

@@ -12,8 +12,8 @@
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
     GOPATH = "$HOME/.local/share/go";
-    HTTP_PROXY = "http://10.160.43.82:7897";
-    HTTPS_PROXY = "http://10.160.43.82:7897";
+    # HTTP_PROXY = "http://192.168.1.123:7897";
+    # HTTPS_PROXY = "http://192.168.1.123:7897";
   };
 
   programs.home-manager.enable = true;
@@ -132,22 +132,18 @@
   home.packages = with pkgs; [
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     age
-    aichat
     bat
     dos2unix
     fd
-    gemini-cli
     htop
     jq
-    miller
     nodejs
     opencode
     pet
+    hack-font
     ranger
     rclone
     ripgrep
-    tdf
-    xan
   ];
 
   xdg.configFile."pet/config.toml".source = ./pet/config.toml;
@@ -156,6 +152,9 @@
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
 
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
+
+  xdg.configFile."konsolerc".source = ./konsole/konsolerc;
+  xdg.dataFile."konsole/leo.profile".source = ./konsole/leo.profile;
 
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
   age.secrets."rclone.conf" = {
