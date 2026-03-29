@@ -1,4 +1,5 @@
 { pkgs, lib, config, inputs, ... }: {
+  nixpkgs.config.allowUnfree = true;
   home.username = "leo";
   home.homeDirectory = "/home/leo";
   home.stateVersion = "24.11"; 
@@ -15,8 +16,6 @@
     # HTTP_PROXY = "http://192.168.1.123:7897";
     # HTTPS_PROXY = "http://192.168.1.123:7897";
   };
-
-  programs.home-manager.enable = true;
 
   programs.delta = {
     enable = true;
@@ -84,6 +83,10 @@
     };
   };
 
+  programs.home-manager.enable = true;
+
+  programs.nix-index-database.comma.enable = true;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -127,14 +130,14 @@
     options = [ "--cmd j" ];
   };
 
-  programs.nix-index-database.comma.enable = true;
-
   home.packages = with pkgs; [
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     age
     bat
     dos2unix
     fd
+    gemini-cli
+    google-chrome
     htop
     jq
     nodejs
@@ -143,7 +146,9 @@
     hack-font
     ranger
     rclone
+    remmina
     ripgrep
+    clash-verge-rev
   ];
 
   xdg.configFile."pet/config.toml".source = ./pet/config.toml;
