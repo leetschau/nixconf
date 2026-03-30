@@ -13,8 +13,6 @@
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
     GOPATH = "$HOME/.local/share/go";
-    # HTTP_PROXY = "http://192.168.1.123:7897";
-    # HTTPS_PROXY = "http://192.168.1.123:7897";
   };
 
   programs.delta = {
@@ -41,8 +39,8 @@
       ".." = "cd ..";
       "..." = "cd ../..";
       nd = "nix develop";
-      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#nix2505";
-      userup = "home-manager switch --flake ~/.config/nixos#leo";
+      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#headless";
+      userup = "home-manager switch --flake ~/.config/nixos#headless";
     };
     shellAbbrs = {
       ga = "git add -A";
@@ -98,17 +96,14 @@
     withNodeJs = true;
     withPython3 = true;
     extraPackages = with pkgs; [
-      # Build tools for Tree-sitter and other plugins
       gcc
       gnumake
-      # Common utilities used by Neovim plugins
       curl
       fd
       ripgrep
       stylua
       unzip
       wget
-      # Language environments for LSP/formatters/linters
       cargo
       go
       lua-language-server
@@ -140,7 +135,6 @@
     dos2unix
     fd
     gemini-cli
-    google-chrome
     htop
     jq
     nodejs
@@ -149,19 +143,12 @@
     hack-font
     ranger
     rclone
-    remmina
     ripgrep
-    clash-verge-rev
   ];
 
   xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
-
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
-
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
-
-  xdg.configFile."konsolerc".source = ./konsole/konsolerc;
-  xdg.dataFile."konsole/leo.profile".source = ./konsole/leo.profile;
 
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
   age.secrets."rclone.conf" = {
@@ -172,5 +159,4 @@
     file = ./secrets/pet-config.age;
     path = "${config.home.homeDirectory}/.config/pet/config.toml";
   };
-
 }

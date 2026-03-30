@@ -21,20 +21,37 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nix-index-database, agenix, ... }@inputs: {
-    # Note: `nix-e7450` is defined in networking.hostName of configuration.nix
-    nixosConfigurations.nix-e7450 = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.dell-e7450 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
-        ./configuration.nix
+        ./nixos-dell-e7450.nix
       ];
     };
 
-    homeConfigurations."leo" = home-manager.lib.homeManagerConfiguration {
+    nixosConfigurations.headless = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        ./nixos-headless.nix
+      ];
+    };
+
+    homeConfigurations."kde-desktop" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       extraSpecialArgs = { inherit inputs; };
       modules = [
-        ./home.nix
+        ./home-desktop.nix
+        nix-index-database.homeModules.nix-index
+        agenix.homeManagerModules.default
+      ];
+    };
+
+    homeConfigurations."headless" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      extraSpecialArgs = { inherit inputs; };
+      modules = [
+        ./home-headless.nix
         nix-index-database.homeModules.nix-index
         agenix.homeManagerModules.default
       ];

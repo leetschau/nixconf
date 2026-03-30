@@ -1,48 +1,66 @@
 # Leo's NixOS & Home Manager Configuration
 
-This repository contains the configuration for the `nix2505` system and the `leo` user environment.
+This repository contains a modular NixOS and Home Manager configuration designed for multiple environments (laptop and headless server).
 
 ## Architecture
 
-This configuration uses a **Standalone Home Manager** architecture. 
-This means the system configuration (managed by NixOS) and the user environment (managed by Home Manager) are decoupled.
+This configuration uses a **Standalone Home Manager** architecture with a hierarchical module system.
+The system configuration (managed by NixOS) and the user environment (managed by Home Manager) are decoupled.
 
-### Benefits of this approach:
+### Hierarchical Structure:
 
-- **Speed:** Updating user configurations (like aliases, shell settings, or user packages) is nearly instantaneous because it doesn't require evaluating the entire system state.
+- **`home-base.nix`**: Contains all shared CLI tools, shell settings (Fish/Git/Neovim), and core utilities.
+- **`home-desktop.nix`**: Imports `home-base.nix` and adds GUI applications (Chrome, Remmina) and desktop-specific configs.
+- **`home-headless.nix`**: Imports `home-base.nix` and serves as a stub for server-specific configurations.
+
+### Benefits:
+
+- **Single Source of Truth:** Basic configurations (like git aliases) are defined once in `home-base.nix` and sync across all machines.
+- **Speed:** Updating user configurations is nearly instantaneous.
 - **Safety:** Modifying user configurations does not require `sudo` privileges.
-- **Clean Boot Menu:** User configuration changes do not create new NixOS system generations in the bootloader.
 
 ## Repository Location
 
 The configuration files are stored in `~/.config/nixos`. 
-This adheres to the XDG Base Directory Specification and keeps the home directory clean while allowing management via Git without root ownership conflicts (which occurs if kept in `/etc/nixos`).
+This adheres to the XDG Base Directory Specification and keeps the home directory clean while allowing management via Git.
 
 ## Usage
 
-Two helpful aliases are provided in `home.nix` for applying changes. Both aliases automatically route traffic through a local proxy to ensure reliable access to GitHub and the official Nix cache, bypassing network restrictions.
+Two helpful aliases are provided in `home-base.nix` for applying changes.
 
 ### Updating System Configuration (Requires `sudo`)
 
-When you modify system-level settings (e.g., `configuration.nix`, hardware config, system packages):
+When you modify system-level settings (e.g., `nixos-*.nix`):
 
+**For Headless Server:**
 ```bash
 nixup
 ```
-*(This is an alias for: `sudo HTTP_PROXY=... HTTPS_PROXY=... nixos-rebuild switch --flake ~/.config/nixos#nix2505`)*
+*(This is an alias for: `sudo nixos-rebuild switch --flake ~/.config/nixos#headless`)*
+
+**For Laptop (Dell E7450):**
+```bash
+sudo nixos-rebuild switch --flake ~/.config/nixos#dell-e7450
+```
 
 ### Updating User Environment (Fast, No `sudo`)
 
-When you modify user-level settings (e.g., `home.nix`, dotfiles, user packages):
+When you modify user-level settings (e.g., any `home-*.nix` file):
 
+**For Headless Server:**
 ```bash
 userup
 ```
-*(This is an alias for: `HTTP_PROXY=... HTTPS_PROXY=... home-manager switch --flake ~/.config/nixos#leo`)*
+*(This is an alias for: `home-manager switch --flake ~/.config/nixos#headless`)*
+
+**For Laptop (KDE Desktop):**
+```bash
+home-manager switch --flake ~/.config/nixos#kde-desktop
+```
 
 ## Network & Caching Strategy
 
-Due to the heavy reliance on GitHub for Nix Flakes and network restrictions (GFW), this configuration relies on a proxy setup.
+Due to the heavy reliance on GitHub for Nix Flakes and potential network restrictions, ensure your environment is configured correctly.
 
-- **Proxy Requirement:** Both update commands (`nixup`, `userup`) are explicitly prefixed with proxy environment variables.
-- **Binary Cache:** We strictly use the official NixOS binary cache (`cache.nixos.org`). Domestic mirrors (like TUNA) are avoided because routing proxy traffic back to a domestic mirror is inefficient and often causes connection drops or slowdowns. The official Fastly-backed CDN provides the best performance when accessed through the proxy.
+- **Binary Cache:** We strictly use the official NixOS binary cache (`cache.nixos.org`). The official Fastly-backed CDN provides the best performance.
+- **Optimized Stores:** The configuration enables `auto-optimise-store` to save disk space by hard-linking identical files in the Nix store.
