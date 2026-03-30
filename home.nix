@@ -151,7 +151,6 @@
     clash-verge-rev
   ];
 
-  xdg.configFile."pet/config.toml".source = ./pet/config.toml;
   xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
 
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
@@ -165,6 +164,10 @@
   age.secrets."rclone.conf" = {
     file = ./secrets/rclone.conf.age;
     path = "${config.home.homeDirectory}/.config/rclone/rclone.conf";
+  };
+  age.secrets."pet-config" = {
+    file = ./secrets/pet-config.age;
+    path = "${config.home.homeDirectory}/.config/pet/config.toml";
   };
 
 }
