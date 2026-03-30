@@ -76,6 +76,9 @@
     enable = true;
     lfs.enable = true;
     settings = {
+      alias = {
+        search-history = "!f() { pattern=$1; shift; git_flags=\"--all --oneline --color=always\"; grep_flags=\"-C 5 --color=always\"; for arg in \"$@\"; do if [ \"$arg\" = \"-i\" ]; then git_flags=\"$git_flags -i\"; grep_flags=\"$grep_flags -i\"; elif [ \"$arg\" = \"-w\" ]; then grep_flags=\"$grep_flags -w\"; pattern=\"\\\\b$pattern\\\\b\"; else git_flags=\"$git_flags $arg\"; fi; done; git log -E -G \"$pattern\" $git_flags | fzf --ansi --preview \"git show --color=always {1} | grep $grep_flags '$pattern'\"; }; f";
+      };
       user.name = "Leo";
       user.email = "leetschau@gmail.com";
       init.defaultBranch = "master";
