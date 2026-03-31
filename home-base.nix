@@ -1,4 +1,8 @@
 { pkgs, lib, config, inputs, ... }: {
+  imports = [
+    ./nvim
+  ];
+
   nixpkgs.config.allowUnfree = true;
   home.username = "leo";
   home.homeDirectory = "/home/leo";
@@ -85,30 +89,6 @@
   programs.home-manager.enable = true;
 
   programs.nix-index-database.comma.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    withNodeJs = true;
-    withPython3 = true;
-    extraPackages = with pkgs; [
-      gcc
-      gnumake
-      curl
-      fd
-      ripgrep
-      stylua
-      unzip
-      wget
-      cargo
-      go
-      lua-language-server
-      python3
-      rustc
-    ];
-  };
 
   programs.starship = {
     enable = true;
