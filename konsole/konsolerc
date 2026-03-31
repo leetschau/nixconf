@@ -1,0 +1,20 @@
+[Desktop Entry]
+DefaultProfile=leo.profile
+
+[General]
+ConfigVersion=1
+TabBarVisibility=2
+NewTabButton=false
+CloseTabButton=2
+SplitViewVisibility=2
+SearchTabsButton=1
+RemoveWindowTitleBarAndFrame=true
+
+[MainWindow]
+MenuBar=Disabled
+
+[MainWindow][Toolbar mainToolBar]
+Hidden=true
+
+[UiSettings]
+ColorScheme=

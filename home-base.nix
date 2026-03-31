@@ -1,4 +1,5 @@
 { pkgs, lib, config, inputs, ... }: {
+  nixpkgs.config.allowUnfree = true;
   home.username = "leo";
   home.homeDirectory = "/home/leo";
   home.stateVersion = "24.11"; 
@@ -12,11 +13,7 @@
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
     GOPATH = "$HOME/.local/share/go";
-    HTTP_PROXY = "http://10.160.43.82:7897";
-    HTTPS_PROXY = "http://10.160.43.82:7897";
   };
-
-  programs.home-manager.enable = true;
 
   programs.delta = {
     enable = true;
@@ -42,8 +39,8 @@
       ".." = "cd ..";
       "..." = "cd ../..";
       nd = "nix develop";
-      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#nix2505";
-      userup = "home-manager switch --flake ~/.config/nixos#leo";
+      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#headless";
+      userup = "home-manager switch --flake ~/.config/nixos#headless";
     };
     shellAbbrs = {
       ga = "git add -A";
@@ -77,12 +74,19 @@
     enable = true;
     lfs.enable = true;
     settings = {
+      alias = {
+        search-history = "!f() { pattern=$1; shift; git_flags=\"--all --oneline --color=always\"; grep_flags=\"-C 5 --color=always\"; for arg in \"$@\"; do if [ \"$arg\" = \"-i\" ]; then git_flags=\"$git_flags -i\"; grep_flags=\"$grep_flags -i\"; elif [ \"$arg\" = \"-w\" ]; then grep_flags=\"$grep_flags -w\"; pattern=\"\\\\b$pattern\\\\b\"; else git_flags=\"$git_flags $arg\"; fi; done; git log -E -G \"$pattern\" $git_flags | fzf --ansi --preview \"git show --color=always {1} | grep $grep_flags '$pattern'\"; }; f";
+      };
       user.name = "Leo";
       user.email = "leetschau@gmail.com";
       init.defaultBranch = "master";
       credential.helper = "cache";
     };
   };
+
+  programs.home-manager.enable = true;
+
+  programs.nix-index-database.comma.enable = true;
 
   programs.neovim = {
     enable = true;
@@ -92,17 +96,14 @@
     withNodeJs = true;
     withPython3 = true;
     extraPackages = with pkgs; [
-      # Build tools for Tree-sitter and other plugins
       gcc
       gnumake
-      # Common utilities used by Neovim plugins
       curl
       fd
       ripgrep
       stylua
       unzip
       wget
-      # Language environments for LSP/formatters/linters
       cargo
       go
       lua-language-server
@@ -127,33 +128,26 @@
     options = [ "--cmd j" ];
   };
 
-  programs.nix-index-database.comma.enable = true;
-
   home.packages = with pkgs; [
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     age
-    aichat
     bat
     dos2unix
     fd
     gemini-cli
     htop
     jq
-    miller
     nodejs
     opencode
     pet
+    hack-font
     ranger
     rclone
     ripgrep
-    tdf
-    xan
   ];
 
   xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
-
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
-
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
 
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
@@ -165,5 +159,4 @@
     file = ./secrets/pet-config.age;
     path = "${config.home.homeDirectory}/.config/pet/config.toml";
   };
-
 }
