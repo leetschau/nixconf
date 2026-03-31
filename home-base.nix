@@ -35,12 +35,8 @@
       end
     '';
     shellAliases = {
-      ll = "ls -l";
       ".." = "cd ..";
       "..." = "cd ../..";
-      nd = "nix develop";
-      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#headless";
-      userup = "home-manager switch --flake ~/.config/nixos#headless";
     };
     shellAbbrs = {
       ga = "git add -A";
@@ -52,15 +48,17 @@
       gco = "git checkout";
       gph = "git push";
       gpl = "git pull";
-      che = "chezmoi";
-      mm = "micromamba";
-      pd = "podman";
-      py = "python3";
-      op = "rifle";
-      ra = "ranger";
       l = "ls -la";
-      lt = "ls -lt";
-      va = "vagrant";
+      ll = "ls -l";
+      lt = "ls -ltr";
+      mm = "micromamba";
+      nd = "nix develop";
+      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#headless";
+      op = "rifle";
+      py = "python3";
+      ra = "ranger";
+      userup = "home-manager switch --flake ~/.config/nixos#headless";
+      wtf = "wtfutil";
       zl = "zellij";
     };
   };
@@ -144,6 +142,8 @@
     ranger
     rclone
     ripgrep
+    wiper
+    wtfutil
   ];
 
   xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
