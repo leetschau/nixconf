@@ -32,6 +32,8 @@
       -- Aerial Outline
       require('aerial').setup({})
       vim.keymap.set("n", "<leader>ow", "<cmd>AerialToggle<cr>", {desc = "Toggle outline"})
+
+      vim.keymap.set("n", "<leader>v", "<cmd>Telescope colorscheme<cr>", {desc = "Colorscheme picker"})
     '';
   };
 }

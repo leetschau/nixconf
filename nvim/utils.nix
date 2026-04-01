@@ -50,7 +50,6 @@
           { "<leader>rm", group = "Marks" },
           { "<leader>rs", group = "Send" },
           { "<leader>t", group = "Toggle" },
-          { "<leader>v", group = "View" },
         },
         {
           mode = { "v" },
@@ -67,9 +66,9 @@
         providers = {
           hs = {
             __inherited_from = "openai",
-            endpoint = "http://10.193.3.205:3000/v1",
+            endpoint = "https://open.bigmodel.cn/api/coding/paas/v4",
             api_key_name = "HS_API_KEY",
-            model = "glm-4.5",
+            model = "glm-5.1",
           },
         },
       })
