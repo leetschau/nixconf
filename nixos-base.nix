@@ -25,6 +25,11 @@
 
   programs.fish.enable = true;
 
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [ "a0cbf4b62af9b50f" ];
+  };
+
   environment.systemPackages = with pkgs; [
     curl
     fish
