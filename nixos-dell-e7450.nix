@@ -49,5 +49,24 @@
 
   users.users.leo.packages = with pkgs; [
     kdePackages.kate
+    kdePackages.fcitx5-configtool
   ];
+
+  services.displayManager.sddm.wayland.enable = true;
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.waylandFrontend = true;
+    fcitx5.addons = with pkgs; [
+      # Crucial for Plasma 6 / Wayland integration
+      kdePackages.fcitx5-qt
+      kdePackages.fcitx5-with-addons
+      fcitx5-fluent
+
+      # Your Chinese addons
+      qt6Packages.fcitx5-chinese-addons
+      fcitx5-pinyin-zhwiki
+      fcitx5-gtk # For GTK app support
+    ];
+  };
 }
