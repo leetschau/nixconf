@@ -93,6 +93,14 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
+    settings = {
+      directory = {
+        truncation_length = 0;
+        truncate_to_repo = false;
+        before_repo_root_style = "dimmed cyan";
+        repo_root_style = "bold underline cyan";
+      };
+    };
   };
 
   programs.zellij = {

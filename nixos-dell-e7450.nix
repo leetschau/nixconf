@@ -13,7 +13,7 @@
     hostName = "dell-e7450";
     useDHCP = false;
     networkmanager.enable = true;
-    interfaces.ens18.ipv4.addresses = [{
+    interfaces.wlp2s0.ipv4.addresses = [{
       address = "192.168.1.24";
       prefixLength = 24;
     }];
