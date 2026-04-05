@@ -50,9 +50,17 @@
   users.users.leo.packages = with pkgs; [
     kdePackages.kate
     kdePackages.fcitx5-configtool
+    wofi
+    grim
+    slurp
+    wl-clipboard
+    networkmanagerapplet
+    pavucontrol
+    waybar
   ];
 
   services.displayManager.sddm.wayland.enable = true;
+  programs.hyprland.enable = true;
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";

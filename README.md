@@ -53,9 +53,9 @@ userup
 ```
 *(This is an alias for: `home-manager switch --flake ~/.config/nixos#headless`)*
 
-**For Laptop (KDE Desktop):**
+**For Desktop (KDE + Hyprland):**
 ```bash
-home-manager switch --flake ~/.config/nixos#kde-desktop
+home-manager switch --flake ~/.config/nixos#desktop
 ```
 
 ## Network & Caching Strategy

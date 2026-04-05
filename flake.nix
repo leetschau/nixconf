@@ -37,7 +37,7 @@
       ];
     };
 
-    homeConfigurations."kde-desktop" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."desktop" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages."x86_64-linux";
       extraSpecialArgs = { inherit inputs; };
       modules = [
