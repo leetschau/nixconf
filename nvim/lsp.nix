@@ -40,14 +40,21 @@
 
     initLua = ''
       -- Conform (Formatting)
+      _G.format_on_save_enabled = true
       require("conform").setup({
         formatters_by_ft = {
           clojure = { "cljfmt" },
           lua = { "stylua" },
           go = { "goimports", "gofmt" },
-          python = { "mypy", "flake8", "yapf" },
+          python = { "yapf" },
         },
-        format_on_save = { lsp_fallback = true, timeout_ms = 800, async = true },
+        format_on_save = function(bufnr)
+          if _G.format_on_save_enabled then
+            return { lsp_fallback = true, timeout_ms = 5000 }
+          else
+            return nil
+          end
+        end,
       })
       vim.keymap.set("n", "<leader>cf", function() require("conform").format() end, {desc = "Format codes"})
 

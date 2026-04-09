@@ -5,6 +5,7 @@
 
   home.packages = with pkgs; [
     eget
+    fx
     glow
     gping
     hyperfine

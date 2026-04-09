@@ -123,6 +123,7 @@
     gemini-cli
     htop
     jq
+    nettools
     nodejs
     opencode
     pet

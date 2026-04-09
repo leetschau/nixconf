@@ -89,6 +89,12 @@
       vim.keymap.set("n", "<leader>gv", "<cmd>Gitsigns preview_hunk<cr>", {desc = "Preview hunk"})
       vim.keymap.set("n", "<leader>gu", "<cmd>Gitsigns undo_stage_hunk<cr>", {desc = "Unstage the hunk under the curor"})
 
+      -- Format on save toggle
+      vim.keymap.set("n", "<leader>tf", function()
+        _G.format_on_save_enabled = not _G.format_on_save_enabled
+        print("Format on save: " .. (_G.format_on_save_enabled and "enabled" or "disabled"))
+      end, {desc = "Toggle format on save"})
+
       -- Neogit
       vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", {desc = "Show Neogit UI"})
     '';

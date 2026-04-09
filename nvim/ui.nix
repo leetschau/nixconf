@@ -8,6 +8,7 @@
       nvim-web-devicons
       nvim-tree-lua
       aerial-nvim # outline
+      (nvim-treesitter.withPlugins (p: [ p.python p.lua p.go p.rust ]))
     ];
 
     initLua = ''
@@ -28,7 +29,13 @@
 
       -- Lualine
       require('lualine').setup({ options = { theme = 'gruvbox_dark' } })
-      
+
+      -- Treesitter
+      require("nvim-treesitter").setup({
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+
       -- Aerial Outline
       require('aerial').setup({})
       vim.keymap.set("n", "<leader>ow", "<cmd>AerialToggle<cr>", {desc = "Toggle outline"})
