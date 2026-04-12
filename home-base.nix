@@ -17,6 +17,7 @@
     PYTHON_KEYRING_BACKEND = "keyring.backends.null.Keyring";
     PYTHONIOENCODING = "utf-8";
     GOPATH = "$HOME/.local/share/go";
+    EGET_BIN = "$HOME/.local/bin";
   };
 
   programs.delta = {
@@ -64,6 +65,16 @@
       userup = "home-manager switch --flake ~/.config/nixos#headless";
       wtf = "wtfutil";
       zl = "zellij";
+    };
+    functions = {
+      eget = ''
+        set -l eget_wrapper ~/.config/nixos/scripts/eget-nixos-wrapper.sh
+        if test -f $eget_wrapper
+          $eget_wrapper $argv
+        else
+          command eget $argv
+        end
+      '';
     };
   };
 
@@ -119,6 +130,8 @@
     age
     bat
     dos2unix
+    eget
+    patchelf
     fd
     gemini-cli
     htop
@@ -138,6 +151,7 @@
   xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
+  xdg.configFile."eget/eget.toml".source = ./eget.toml;
 
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
   age.secrets."rclone.conf" = {

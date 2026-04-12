@@ -1,5 +1,7 @@
 # Hyprland Cheatsheet
 
+[hyprland](https://github.com/hyprwm/hyprland) is a modern tiling window manager working smoothly with NixOS.
+
 ## Mod Key
 **SUPER** = Windows key
 

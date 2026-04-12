@@ -1,0 +1,17 @@
+# Eget configuration file
+# Tools installed with 'eget <author>/<repo>' will have their config auto-added here
+# Run 'eget --download-all' to reinstall all tools listed below
+
+[global]
+# Default installation directory for all binaries
+target = "~/.local/bin"
+# Only download if newer version exists (prevents unnecessary downloads)
+upgrade_only = true
+
+# Example configurations (uncomment and modify as needed)
+# ["cli/cli"]
+# asset_filters = ["linux", "amd64", "appimage"]
+
+["erickochen/purple"]
+asset_filters = ["linux", "x86_64"]
+
