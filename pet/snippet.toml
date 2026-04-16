@@ -544,3 +544,9 @@
   Output = ""
   Tag = ["quarto", "preview"]
   command = "quarto preview <report-file>.qmd --host <public-ip=0.0.0.0> --port 4200 --no-browser"
+
+[[Snippets]]
+  Description = "Print the <n>th record (1-indexed) of the CSV file"
+  Output = ""
+  Tag = ["csv", "display", "record"]
+  command = "mlr --from <input>.csv --c2x filter \"NR == <n=1>\""

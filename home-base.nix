@@ -148,7 +148,6 @@
     wtfutil
   ];
 
-  xdg.configFile."pet/snippet.toml".source = ./pet/snippet.toml;
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
   xdg.configFile."eget/eget.toml".source = ./eget.toml;
