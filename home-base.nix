@@ -131,16 +131,18 @@
     bat
     dos2unix
     eget
-    patchelf
     fd
     gemini-cli
+    hack-font
     htop
+    jid
+    jless
     jq
     nettools
     nodejs
     opencode
+    patchelf
     pet
-    hack-font
     ranger
     rclone
     ripgrep

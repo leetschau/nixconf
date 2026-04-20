@@ -13,5 +13,8 @@ upgrade_only = true
 # asset_filters = ["linux", "amd64", "appimage"]
 
 ["erickochen/purple"]
-asset_filters = ["linux", "x86_64"]
+asset_filters = ["linux", "x86_64", "musl.tar.gz"]
 
+["matthart1983/netwatch"]
+asset_filters = ["linux", "x86_64", "static"]
+rename = "netwatch"
