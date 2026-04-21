@@ -20,19 +20,13 @@
     xan
   ];
 
-  home.sessionVariables = {
-    http_proxy = "http://10.160.43.82:7897";
-    https_proxy = "http://10.160.43.82:7897";
-    HTTP_PROXY = "http://10.160.43.82:7897";
-    HTTPS_PROXY = "http://10.160.43.82:7897";
-  };
-
   programs.fish = {
     shellAbbrs = {
       pd = "podman";
       pdc = "podman-compose";
       docker = "podman";
       va = "vagrant";
+      gemini = "http_proxy=http://10.160.43.82:7897 https_proxy=http://10.160.43.82:7897 gemini";
     };
   };
 }
