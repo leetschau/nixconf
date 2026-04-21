@@ -153,6 +153,7 @@
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
   xdg.configFile."zellij/config.kdl".source = ./zellij-config.kdl;
   xdg.configFile."eget/eget.toml".source = ./eget.toml;
+  xdg.configFile."opencode".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixos/opencode";
 
   age.identityPaths = [ "${config.home.homeDirectory}/.ssh/master_age_key.txt" ];
   age.secrets."rclone.conf" = {
