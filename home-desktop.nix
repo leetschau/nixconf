@@ -8,6 +8,7 @@
     remmina
     clash-verge-rev
     calibre
+    swww
   ];
 
   xdg.configFile."hypr".source = ./hyprland;
