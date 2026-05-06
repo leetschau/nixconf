@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     fx
     glow
+    google-cloud-sdk
     gping
     hyperfine
     mamba
@@ -17,6 +18,7 @@
     podman-tui
     tldr
     uv
+    visidata
     xan
   ];
 

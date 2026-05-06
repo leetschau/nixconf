@@ -43,12 +43,22 @@ age.secrets."friendly-name" = {
 
 ## Update An Existing Encrypted File
 
-agenix -i ~/.ssh/master_age_key.txt -e secrets/pet-config.age  # update an existing encrypted configuration file
+You need to update the encrypted file manually and validate it:
+```fish
+agenix -i ~/.ssh/master_age_key.txt -e secrets/pet-config.age
+home-manager switch --flake ~/.config/nixos#headless
+```
+
+Note: if the configuration file is updated by the app itself, for example `rclone config`,
+you have to open the nix-managed configuration file in the <EDITOR> with above `agenix -i ...`,
+then copy the contents from ~/.config/rclone/rclone.conf into this editor, save and exit.
+Without this step, you new configurations in ~/.config/rclone/rclone.conf will be overwritten
+by the encrypted (old) version after `home-manager switch ...`.
 
 ## Stage and Deploy
 
-Nix Flakes ignore files that are not tracked by Git. You **must** stage the new `.age` file before applying changes.
-
+Nix Flakes ignore files that are not tracked by Git.
+A new `.age` file must be added into the git repo before applying changes:
 ```bash
 git add secrets/new-secret.age
 userup
