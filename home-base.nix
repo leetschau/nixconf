@@ -35,6 +35,8 @@
     interactiveShellInit = ''
       set -g fish_greeting ""
       fish_vi_key_bindings
+      bind -M insert ctrl-g history-token-search-backward
+      bind ctrl-g history-token-search-backward
       function take --description "Create directory and cd into it"
         mkdir -p $argv[1]; and cd $argv[1]
       end
@@ -141,6 +143,7 @@
     nettools
     nodejs
     opencode
+    p7zip
     patchelf
     pet
     ranger
@@ -148,6 +151,7 @@
     ripgrep
     wiper
     wtfutil
+    zip
   ];
 
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;
