@@ -10,6 +10,7 @@
 
   home.sessionPath = [
     "$HOME/.local/bin"
+    "$HOME/.cargo/bin"
     "$HOME/.local/share/go/bin"
   ];
 
@@ -36,7 +37,6 @@
       set -g fish_greeting ""
       fish_vi_key_bindings
       bind -M insert ctrl-g history-token-search-backward
-      bind ctrl-g history-token-search-backward
       function take --description "Create directory and cd into it"
         mkdir -p $argv[1]; and cd $argv[1]
       end
@@ -131,9 +131,11 @@
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     age
     bat
+    bc
     dos2unix
     eget
     fd
+    file
     gemini-cli
     hack-font
     htop
@@ -151,6 +153,7 @@
     ripgrep
     wiper
     wtfutil
+    yt-dlp
     zip
   ];
 
