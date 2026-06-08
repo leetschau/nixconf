@@ -4,6 +4,7 @@
       gopls
       lua-language-server
       pyright
+      harper # provides harper-ls
 
       cljfmt
       gotools # provides goimports
@@ -62,17 +63,55 @@
       local lsp_zero = require("lsp-zero")
       lsp_zero.on_attach(function(_, bufnr)
         lsp_zero.default_keymaps({ buffer = bufnr })
+        vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { buffer = bufnr, desc = "Code Action" })
       end)
+
+      -- Diagnostics
+      vim.diagnostic.config({
+        virtual_text = true,
+        signs = true,
+        underline = true,
+      })
+
+      -- Harper toggle
+      vim.keymap.set("n", "<leader>th", function()
+        local clients = vim.lsp.get_clients({ name = "harper_ls" })
+        if #clients > 0 then
+          vim.cmd("LspStop harper_ls")
+          vim.notify("Harper off")
+        else
+          vim.cmd("LspStart harper_ls")
+          vim.notify("Harper on")
+        end
+      end, { desc = "Toggle Harper" })
       
       if vim.lsp.enable then
+        vim.lsp.config('harper_ls', {
+          cmd = { 'harper-ls', '--stdio' },
+          filetypes = { 'markdown', 'gitcommit', 'text', 'plaintext' },
+          root_markers = { '.git' },
+          settings = {
+            ["harper-ls"] = {
+              diagnosticSeverity = "warning",
+            },
+          },
+        })
         vim.lsp.enable('gopls')
         vim.lsp.enable('lua_ls')
         vim.lsp.enable('pyright')
+        vim.lsp.enable('harper_ls')
       else
         local lspconfig = require('lspconfig')
         lspconfig.gopls.setup({})
         lspconfig.lua_ls.setup({})
         lspconfig.pyright.setup({})
+        lspconfig.harper_ls.setup({
+          settings = {
+            ["harper-ls"] = {
+              diagnosticSeverity = "warning",
+            },
+          },
+        })
       end
 
       -- CMP
