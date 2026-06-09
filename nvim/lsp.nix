@@ -4,15 +4,17 @@
       gopls
       lua-language-server
       pyright
-      harper # provides harper-ls
+      rust-analyzer
+      harper
 
       cljfmt
-      gotools # provides goimports
+      gotools
       stylua
       yapf
 
       python3Packages.debugpy
       delve
+      vscode-extensions.vadimcn.vscode-lldb
     ];
 
     plugins = with pkgs.vimPlugins; [
@@ -126,11 +128,74 @@
         }
       })
 
-      -- Dap (Go & Python)
+      -- Rustaceanvim
+      vim.g.rustaceanvim = {
+        server = {
+          cmd = function()
+            return { 'rust-analyzer' }
+          end,
+        },
+        dap = {
+          adapter = function()
+            return {
+              type = 'server',
+              host = '127.0.0.1',
+              port = '$' .. '{port}',
+              executable = {
+                command = '${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb',
+                args = { '--port', '$' .. '{port}' },
+              },
+            }
+          end,
+        },
+      }
+
+      -- Dap (Go, Python, Rust)
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.exepath("python"))
       require("dapui").setup()
+      local dap = require("dap")
+      dap.adapters.codelldb = {
+        type = 'server',
+        host = '127.0.0.1',
+        port = '$' .. '{port}',
+        executable = {
+          command = '${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb',
+          args = { '--port', '$' .. '{port}' },
+        },
+      }
+      dap.configurations.rust = dap.configurations.rust or {
+        {
+          name = "Launch bin",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/simhash-lsh-uf', 'file')
+          end,
+          args = function()
+            local a = vim.fn.input('Args: ', '-i data/sample.csv')
+            return vim.split(a, ' ')
+          end,
+          cwd = vim.fn.getcwd(),
+          stopOnEntry = false,
+        },
+      }
       vim.keymap.set("n", "<leader>db", function() require("dap").toggle_breakpoint() end, {desc = "toggle Breakpoint"})
+      vim.keymap.set("n", "<leader>dc", function() require("dap").continue() end, {desc = "Continue"})
+      vim.keymap.set("n", "<leader>di", function() require("dap").step_into() end, {desc = "Step Into"})
+      vim.keymap.set("n", "<leader>do", function() require("dap").step_over() end, {desc = "Step Over"})
+      vim.keymap.set("n", "<leader>dO", function() require("dap").step_out() end, {desc = "Step Out"})
+      vim.keymap.set("n", "<leader>dd", function() require("dapui").toggle() end, {desc = "Toggle DAP UI"})
+      vim.keymap.set("n", "<leader>dr", function() require("dap").repl.toggle() end, {desc = "Toggle REPL"})
+      vim.keymap.set("n", "<leader>dq", function() require("dap").terminate() end, {desc = "Terminate"})
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "rust",
+        callback = function()
+          vim.keymap.set("n", "<leader>dR", function()
+            vim.cmd('RustLsp debuggables')
+          end, { buffer = true, desc = "Rust Debuggables" })
+        end,
+      })
 
       -- Iron REPL
       local cfn = vim.api.nvim_buf_get_name(0)
