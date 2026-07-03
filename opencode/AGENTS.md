@@ -26,11 +26,24 @@ When a Nix development environment is detected, ALL development tool commands mu
 - Git commands (`git add`, `git commit`, etc.) should NOT be wrapped
 - Shell builtins (`cd`, `ls`, `cat`, etc.) should NOT be wrapped
 
-## GitHub Proxy Configuration
-When fetching content from GitHub using webfetch, use the proxy server:
+## Web Proxy Configuration (GFW-banned / GitHub Sites)
+Some websites are blocked by the GFW (e.g. github.com, patents.google.com, and other
+offshore resources). Fetch them through the proxy server:
 - **Proxy URL**: `http://10.160.43.82:7897`
-- This applies to all github.com and api.github.com requests
+- This applies to all github.com, api.github.com, and other GFW-banned requests
+
+### How to Use
+The `webfetch` tool has no proxy parameter, so it CANNOT be used for GFW-banned sites.
+Instead, use the Bash tool with `curl` through the proxy:
+
+```bash
+# Download HTML/markdown through the proxy
+curl -s --proxy http://10.160.43.82:7897 <url>
+# or with https_proxy env var
+https_proxy=http://10.160.43.82:7897 http_proxy=http://10.160.43.82:7897 curl -sL <url>
+```
 
 ### Examples
-- When using webfetch to fetch GitHub repositories, raw files, or API content, route through the proxy
-- Example proxy usage pattern: ensure GitHub requests are proxied through `http://10.160.43.82:7897`
+- GitHub repositories, raw files, or API content: route through `http://10.160.43.82:7897`
+- patents.google.com: route through `http://10.160.43.82:7897`
+- Any other offshore URL that times out: route through `http://10.160.43.82:7897`
