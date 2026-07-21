@@ -29,7 +29,7 @@ When a Nix development environment is detected, ALL development tool commands mu
 ## Web Proxy Configuration (GFW-banned / GitHub Sites)
 Some websites are blocked by the GFW (e.g. github.com, patents.google.com, and other
 offshore resources). Fetch them through the proxy server:
-- **Proxy URL**: `http://10.160.43.82:7897`
+- **Proxy URL**: `http://192.168.1.123:7897`
 - This applies to all github.com, api.github.com, and other GFW-banned requests
 
 ### How to Use
@@ -38,12 +38,12 @@ Instead, use the Bash tool with `curl` through the proxy:
 
 ```bash
 # Download HTML/markdown through the proxy
-curl -s --proxy http://10.160.43.82:7897 <url>
+curl -s --proxy http://192.168.1.123:7897 <url>
 # or with https_proxy env var
-https_proxy=http://10.160.43.82:7897 http_proxy=http://10.160.43.82:7897 curl -sL <url>
+https_proxy=http://192.168.1.123:7897 http_proxy=http://192.168.1.123:7897 curl -sL <url>
 ```
 
 ### Examples
-- GitHub repositories, raw files, or API content: route through `http://10.160.43.82:7897`
-- patents.google.com: route through `http://10.160.43.82:7897`
-- Any other offshore URL that times out: route through `http://10.160.43.82:7897`
+- GitHub repositories, raw files, or API content: route through `http://192.168.1.123:7897`
+- patents.google.com: route through `http://192.168.1.123:7897`
+- Any other offshore URL that times out: route through `http://192.168.1.123:7897`

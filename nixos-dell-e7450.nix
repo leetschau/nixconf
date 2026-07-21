@@ -82,4 +82,13 @@
       fcitx5-gtk # For GTK app support
     ];
   };
+
+  fonts.packages = with pkgs; [
+    noto-fonts-cjk-sans
+  ];
+
+  fonts.fontconfig.defaultFonts = {
+    sansSerif = [ "Noto Sans" "Noto Sans CJK SC" ];
+    monospace = [ "Hack" "Noto Sans Mono CJK SC" ];
+  };
 }
