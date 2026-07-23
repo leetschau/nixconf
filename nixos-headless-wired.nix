@@ -3,7 +3,7 @@
 {
   imports = [
     ./nixos-base.nix
-    ./hardware-headless.nix
+    ./hardware-headless-wired.nix
   ];
 
   boot.loader.grub.enable = true;

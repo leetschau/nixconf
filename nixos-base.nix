@@ -23,6 +23,18 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+  security.sudo.extraRules = [
+    {
+      users = [ "leo" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
   programs.fish.enable = true;
 
   services.zerotierone = {
@@ -34,6 +46,7 @@
     curl
     fish
     git
+    home-manager
     htop
     neovim
     tree

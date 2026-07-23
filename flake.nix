@@ -29,11 +29,19 @@
       ];
     };
 
-    nixosConfigurations.headless = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.headless-wired = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
-        ./nixos-headless.nix
+        ./nixos-headless-wired.nix
+      ];
+    };
+
+    nixosConfigurations.headless-thinkcentre = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        ./nixos-headless-thinkcentre.nix
       ];
     };
 

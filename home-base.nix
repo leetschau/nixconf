@@ -33,6 +33,11 @@
 
   programs.fish = {
     enable = true;
+    shellInit = ''
+      if test -f ${config.age.secrets."glm-api-key".path}
+        set -gx ZHIPU_API_KEY (cat ${config.age.secrets."glm-api-key".path} | string trim)
+      end
+    '';
     interactiveShellInit = ''
       set -g fish_greeting ""
       fish_vi_key_bindings
@@ -170,5 +175,9 @@
   age.secrets."pet-config" = {
     file = ./secrets/pet-config.age;
     path = "${config.home.homeDirectory}/.config/pet/config.toml";
+  };
+  age.secrets."glm-api-key" = {
+    file = ./secrets/glm-api-key.age;
+    path = "${config.home.homeDirectory}/.local/share/secrets/glm-api-key";
   };
 }

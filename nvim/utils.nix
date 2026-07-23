@@ -1,8 +1,7 @@
 { pkgs, ... }: {
   programs.neovim = {
     plugins = with pkgs.vimPlugins; [
-      avante-nvim
-      img-clip-nvim
+      codecompanion-nvim
       render-markdown-nvim
       nui-nvim
       
@@ -60,18 +59,35 @@
         }
       })
 
-      -- Avante
-      require('avante').setup({
-        provider = "hs",
-        providers = {
-          hs = {
-            __inherited_from = "openai",
-            endpoint = "https://open.bigmodel.cn/api/coding/paas/v4",
-            api_key_name = "HS_API_KEY",
-            model = "glm-5.1",
+      -- CodeCompanion
+      require('codecompanion').setup({
+        adapters = {
+          http = {
+            glm = function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  api_key = "ZHIPU_API_KEY",
+                  url = "https://open.bigmodel.cn/api/coding/paas/v4",
+                  chat_url = "/chat/completions",
+                },
+                name = "glm",
+                schema = {
+                  model = {
+                    default = "glm-5.1",
+                    choices = { "glm-5.1" },
+                  },
+                },
+              })
+            end,
           },
         },
+        strategies = {
+          chat = { adapter = "glm" },
+          inline = { adapter = "glm" },
+          cmd = { adapter = "glm" },
+        },
       })
+      vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat<cr>", { desc = "CodeCompanion chat" })
       
       -- Gitsigns
       require('gitsigns').setup({ current_line_blame = true })

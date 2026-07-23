@@ -28,7 +28,7 @@
       pdc = "podman-compose";
       docker = "podman";
       va = "vagrant";
-      gemini = "http_proxy=http://10.160.43.82:7897 https_proxy=http://10.160.43.82:7897 gemini";
+      gemini = "http_proxy=http://192.168.1.123:7897 https_proxy=http://192.168.1.123:7897 gemini";
     };
   };
 }
