@@ -79,10 +79,21 @@
       vim.keymap.set("n", "<leader>th", function()
         local clients = vim.lsp.get_clients({ name = "harper_ls" })
         if #clients > 0 then
-          vim.cmd("LspStop harper_ls")
+          for _, c in ipairs(clients) do
+            c:stop()
+          end
           vim.notify("Harper off")
         else
-          vim.cmd("LspStart harper_ls")
+          vim.lsp.start({
+            name = "harper_ls",
+            cmd = { "harper-ls", "--stdio" },
+            root_markers = { ".git" },
+            settings = {
+              ["harper-ls"] = {
+                diagnosticSeverity = "warning",
+              },
+            },
+          })
           vim.notify("Harper on")
         end
       end, { desc = "Toggle Harper" })
