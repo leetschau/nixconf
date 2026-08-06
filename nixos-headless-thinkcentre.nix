@@ -20,6 +20,22 @@
   networking.proxy.default = "http://192.168.1.123:7897/";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  # NAS: lazy-mount via systemd so boot never blocks if the NAS is offline.
+  fileSystems."/mnt/nas" = {
+    device = "192.168.1.123:/volume1/Public";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "noauto"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=600"
+      "x-systemd.device-timeout=5s"
+      "x-systemd.mount-timeout=5s"
+      "noatime"
+      "x-gvfs-hide"
+    ];
+  };
+
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
