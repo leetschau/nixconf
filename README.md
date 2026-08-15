@@ -7,13 +7,13 @@ This repository contains a modular NixOS and Home Manager configuration designed
 This configuration uses a **Standalone Home Manager** architecture with a hierarchical module system.
 The system configuration (managed by NixOS) and the user environment (managed by Home Manager) are decoupled.
 
-### Hierarchical Structure:
+### Hierarchical Structure
 
 - **`home-base.nix`**: Contains all shared CLI tools, shell settings (Fish/Git/Neovim), and core utilities.
 - **`home-desktop.nix`**: Imports `home-base.nix` and adds GUI applications (Chrome, Remmina) and desktop-specific configs.
 - **`home-headless.nix`**: Imports `home-base.nix` and serves as a stub for server-specific configurations.
 
-### Benefits:
+### Benefits
 
 - **Single Source of Truth:** Basic configurations (like git aliases) are defined once in `home-base.nix` and sync across all machines.
 - **Speed:** Updating user configurations is nearly instantaneous.
@@ -58,7 +58,15 @@ userup
 home-manager switch --flake ~/.config/nixos#desktop
 ```
 
-## Network & Caching Strategy
+## Network Configuration
+
+### Setup IPv4 Address Interactively
+
+The WiFi configurations (SSID, IP address, gateway, etc.) always change for different hosts.
+So it's a good strategy to move these configurations out of NixOS configurations in this repo.
+See nixos-headless-thinkcentre.nix for details.
+
+### Caching Strategy
 
 Due to the heavy reliance on GitHub for Nix Flakes and potential network restrictions, ensure your environment is configured correctly.
 

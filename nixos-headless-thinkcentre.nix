@@ -14,6 +14,7 @@
   networking.hostName = "thinkcentre"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
+  # For example, set IPv4 address to "192.168.1.82", etc.
   networking.networkmanager.enable = true;
 
   # Configure network proxy if necessary
