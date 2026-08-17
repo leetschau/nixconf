@@ -17,9 +17,13 @@
   # For example, set IPv4 address to "192.168.1.82", etc.
   networking.networkmanager.enable = true;
 
-  # Configure network proxy if necessary
-  networking.proxy.default = "http://192.168.1.123:7897/";
-  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # No system-wide proxy. Use `pon`/`poff` in fish shells to toggle it per session.
+  # The nix daemon keeps the proxy so substituter downloads still work.
+  systemd.services.nix-daemon.environment = {
+    http_proxy = "http://192.168.1.123:7897";
+    https_proxy = "http://192.168.1.123:7897";
+    no_proxy = "127.0.0.1,localhost";
+  };
 
   # NAS: lazy-mount via systemd so boot never blocks if the NAS is offline.
   fileSystems."/mnt/nas" = {

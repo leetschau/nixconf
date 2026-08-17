@@ -5,7 +5,6 @@
 
   home.packages = with pkgs; [
     fx
-    glow
     google-cloud-sdk
     gping
     hyperfine
@@ -28,7 +27,7 @@
       pdc = "podman-compose";
       docker = "podman";
       va = "vagrant";
-      gemini = "http_proxy=http://192.168.1.123:7897 https_proxy=http://192.168.1.123:7897 gemini";
+      gemini = "pon; gemini";
     };
   };
 }

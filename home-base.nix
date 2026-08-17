@@ -65,15 +65,54 @@
       lt = "ls -ltr";
       mm = "micromamba";
       nd = "nix develop";
-      nixup = "sudo nixos-rebuild switch --flake ~/.config/nixos#headless";
       op = "rifle";
       py = "python3";
       ra = "ranger";
-      userup = "home-manager switch --flake ~/.config/nixos#headless";
       wtf = "wtfutil";
       zl = "zellij";
     };
     functions = {
+      pon = ''
+        set -gx http_proxy http://192.168.1.123:7897
+        set -gx https_proxy $http_proxy
+        set -gx all_proxy $http_proxy
+        set -gx HTTP_PROXY $http_proxy
+        set -gx HTTPS_PROXY $http_proxy
+        set -gx ALL_PROXY $http_proxy
+        set -gx no_proxy "127.0.0.1,localhost,internal.domain"
+        set -gx NO_PROXY $no_proxy
+        echo "proxy on -> $http_proxy"
+      '';
+      poff = ''
+        set -e http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY no_proxy NO_PROXY
+        echo "proxy off"
+      '';
+      nixup = ''
+        set -l flake ~/.config/nixos
+        set -l nixos_targets (nix eval --raw $flake#nixosConfigurations \
+          --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
+        set -l home_targets (nix eval --raw $flake#homeConfigurations \
+          --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
+
+        if test (count $argv) -eq 0; or test $argv[1] = --list
+          echo "NixOS targets:"
+          printf '  %s\n' $nixos_targets
+          echo "Home-manager targets:"
+          printf '  %s\n' $home_targets
+          echo "Usage: nixup <target>"
+          return 0
+        end
+
+        set -l target $argv[1]
+        if contains -- $target $nixos_targets
+          sudo nixos-rebuild switch --flake $flake#$target
+        else if contains -- $target $home_targets
+          home-manager switch --flake $flake#$target
+        else
+          echo "nixup: unknown target '$target' (run nixup --list)" >&2
+          return 1
+        end
+      '';
       eget = ''
         set -l eget_wrapper ~/.config/nixos/scripts/eget-nixos-wrapper.sh
         if test -f $eget_wrapper
@@ -147,6 +186,7 @@
     jid
     jless
     jq
+    mdcat
     nettools
     nodejs
     opencode
