@@ -181,6 +181,7 @@
     fd
     file
     gemini-cli
+    gh
     hack-font
     htop
     jid

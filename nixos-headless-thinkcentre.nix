@@ -117,6 +117,38 @@
     defaultNetwork.settings.dns_enabled = true;    
   };
 
+  # mlops-demo VM host support (managed by ~/docs/mlops-demo, see its README)
+  virtualisation.libvirtd.enable = true;
+  # DNAT: fixed host ports -> mlops VM (192.168.100.10 on libvirt net "mlops", bridge virbr1)
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "virbr1" ];
+    externalInterface = "wlp0s20f0u6";
+    forwardPorts = [
+      { sourcePort = 3000; destination = "192.168.100.10:3000"; proto = "tcp"; }
+      { sourcePort = 5000; destination = "192.168.100.10:5000"; proto = "tcp"; }
+      { sourcePort = 9000; destination = "192.168.100.10:9000"; proto = "tcp"; }
+      { sourcePort = 9001; destination = "192.168.100.10:9001"; proto = "tcp"; }
+      { sourcePort = 2222; destination = "192.168.100.10:22"; proto = "tcp"; }
+    ];
+  };
+  # libvirt's LIBVIRT_FWI chain rejects externally-initiated DNAT'd flows into the NAT net;
+  # pre-empt it with an early ACCEPT for the mlops VM
+  networking.nat.extraCommands = ''
+    iptables -w -I FORWARD 1 -d 192.168.100.10 -j ACCEPT
+  '';
+  # this host's TPM is unusable; upstream secret-encryption init crashes systemd-creds (TPM path).
+  # Keep the same logic but encrypt with the local host key instead of TPM:
+  systemd.services.virt-secret-init-encryption.serviceConfig.ExecStart =
+    lib.mkForce [
+      ""
+      "/run/current-system/sw/bin/sh -c 'mkdir -p /var/lib/libvirt/secrets && dd if=/dev/urandom status=none bs=32 count=1 | systemd-creds encrypt --with-key=host --name=secrets-encryption-key - /var/lib/libvirt/secrets/secrets-encryption-key'"
+    ];
+  # repeated switches trigger start-rate-limit cascades on these oneshots; disable the limiter
+  systemd.services.virt-secret-init-encryption.unitConfig.StartLimitIntervalSec = 0;
+  systemd.services.libvirtd-config.unitConfig.StartLimitIntervalSec = 0;
+  users.users.leo.extraGroups = [ "libvirtd" ];
+
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
