@@ -117,26 +117,16 @@
     defaultNetwork.settings.dns_enabled = true;    
   };
 
-  # mlops-demo VM host support (managed by ~/docs/mlops-demo, see its README)
-  virtualisation.libvirtd.enable = true;
-  # DNAT: fixed host ports -> mlops VM (192.168.100.10 on libvirt net "mlops", bridge virbr1)
-  networking.nat = {
+  # mlops-demo VM host support (managed by ~/docs/mlops-demo, see its README).
+  # Only generic libvirt infra lives here; DNAT/NAT rules are applied imperatively
+  # by ~/docs/mlops-demo/scripts/nat.sh (vm.sh start + libvirt network hook).
+  virtualisation.libvirtd = {
     enable = true;
-    internalInterfaces = [ "virbr1" ];
-    externalInterface = "wlp0s20f0u6";
-    forwardPorts = [
-      { sourcePort = 3000; destination = "192.168.100.10:3000"; proto = "tcp"; }
-      { sourcePort = 5000; destination = "192.168.100.10:5000"; proto = "tcp"; }
-      { sourcePort = 9000; destination = "192.168.100.10:9000"; proto = "tcp"; }
-      { sourcePort = 9001; destination = "192.168.100.10:9001"; proto = "tcp"; }
-      { sourcePort = 2222; destination = "192.168.100.10:22"; proto = "tcp"; }
-    ];
+    # guests: graceful shutdown on host shutdown; never auto-started/restored on boot
+    # (start the mlops environment manually: ~/docs/mlops-demo/scripts/vm.sh start)
+    onBoot = "ignore";
+    onShutdown = "shutdown";
   };
-  # libvirt's LIBVIRT_FWI chain rejects externally-initiated DNAT'd flows into the NAT net;
-  # pre-empt it with an early ACCEPT for the mlops VM
-  networking.nat.extraCommands = ''
-    iptables -w -I FORWARD 1 -d 192.168.100.10 -j ACCEPT
-  '';
   # this host's TPM is unusable; upstream secret-encryption init crashes systemd-creds (TPM path).
   # Keep the same logic but encrypt with the local host key instead of TPM:
   systemd.services.virt-secret-init-encryption.serviceConfig.ExecStart =
