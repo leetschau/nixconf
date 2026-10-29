@@ -26,37 +26,48 @@ This adheres to the XDG Base Directory Specification and keeps the home director
 
 ## Usage
 
-Two helpful aliases are provided in `home-base.nix` for applying changes.
+The `nixup` fish function (defined in `home-base.nix`) applies changes. It resolves this machine's targets from the hostname:
 
-### Updating System Configuration (Requires `sudo`)
+| Hostname | NixOS target | Home Manager target |
+|---|---|---|
+| `thinkcentre` | `headless-thinkcentre` | `headless` |
+| `nix2505` | `headless-wired` | `headless` |
+| `dell-e7450` | `dell-e7450` | `desktop` |
 
-When you modify system-level settings (e.g., `nixos-*.nix`):
+### Auto Mode (default)
 
-**For Headless Server:**
 ```bash
 nixup
 ```
-*(This is an alias for: `sudo nixos-rebuild switch --flake ~/.config/nixos#headless`)*
 
-**For Laptop (Dell E7450):**
+1. Collects uncommitted changes in `~/.config/nixos` via `git status` (staged, unstaged, and untracked).
+2. Maps each changed file to the targets it affects, shows the plan, and skips changes belonging to other hosts.
+3. After confirmation, runs `sudo nixos-rebuild switch` and/or `home-manager switch` for this host only.
+
+File-to-target mapping:
+
+- `nixos-<host>.nix`, `hardware-<host>.nix` → that host's NixOS config only
+- `nixos-base.nix` → all NixOS hosts
+- `flake.nix`, `flake.lock` → both layers (all NixOS + Home Manager)
+- `home-desktop.nix`, `home-headless.nix` → that Home Manager target only
+- anything else (`home-base.nix`, `nvim/`, `secrets/`, dotfiles) → all Home Manager targets
+
+### Explicit Mode
+
 ```bash
-sudo nixos-rebuild switch --flake ~/.config/nixos#dell-e7450
+nixup --list                          # list all flake targets
+nixup headless                        # home-manager switch --flake ~/.config/nixos#headless
+nixup headless-thinkcentre            # sudo nixos-rebuild switch --flake ~/.config/nixos#headless-thinkcentre
 ```
 
-### Updating User Environment (Fast, No `sudo`)
+Equivalent raw commands, e.g. for other hosts or debugging:
 
-When you modify user-level settings (e.g., any `home-*.nix` file):
-
-**For Headless Server:**
 ```bash
-userup
+sudo nixos-rebuild switch --flake ~/.config/nixos#<nixos-target>
+home-manager switch --flake ~/.config/nixos#<home-target>
 ```
-*(This is an alias for: `home-manager switch --flake ~/.config/nixos#headless`)*
 
-**For Desktop (KDE + Hyprland):**
-```bash
-home-manager switch --flake ~/.config/nixos#desktop
-```
+The NixOS and Home Manager layers are switched independently: user-level changes (`home-*.nix`, `nvim/`) never need `sudo`, and system-level changes (`nixos-*.nix`) only affect the machine whose hostname matches.
 
 ## Network Configuration
 

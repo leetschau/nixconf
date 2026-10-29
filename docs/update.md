@@ -2,7 +2,7 @@
 
 ```bash
 nix flake update --flake ~/.config/nixos
-home-manager switch --flake ~/.config/nixos#leo
+nixup
 ```
 
 The first command updates the "recipe," and the second command "cooks" it:
@@ -10,8 +10,11 @@ The first command updates the "recipe," and the second command "cooks" it:
 * `nix flake update`: updates `flake.lock`, fetching the latest versions of all flake inputs
   (nixpkgs, home-manager, nix-index-database, agenix, etc.),
   like `apt update`, `pacman -Sy`, or `dnf check-update`.
-* `home-manager switch`: builds and activates your home-manager config using the current flake inputs,
-  installing/upgrading any changed packages, like `apt upgrade`, `pacman -Su`, or `dnf upgrade`.
+* `nixup`: detects the modified `flake.lock` (uncommitted change) and offers to run both
+  `sudo nixos-rebuild switch` and `home-manager switch` for the current host,
+  like `apt upgrade`, `pacman -Su`, or `dnf upgrade`.
+  (On a non-NixOS machine, run `home-manager switch --flake ~/.config/nixos#<target>` instead;
+  see README.md for the hostname-to-target table.)
 
 Note:
 

@@ -61,7 +61,7 @@ Nix Flakes ignore files that are not tracked by Git.
 A new `.age` file must be added into the git repo before applying changes:
 ```bash
 git add secrets/new-secret.age
-userup
+nixup
 ```
 
-`userup` is necessary for both creating and updating secret files.
+`nixup` (auto mode) detects the new secret file and runs the Home Manager switch for this host.

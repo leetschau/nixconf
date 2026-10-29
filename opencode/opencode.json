@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "zai-coding-plan/glm-4.7",
+  "model": "zhipuai-coding-plan/glm-5.3",
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",

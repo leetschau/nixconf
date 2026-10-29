@@ -148,7 +148,7 @@ These components are already configured in this repository:
 
 ### Basic Usage
 
-After running `userup` to apply Home Manager changes:
+After running `nixup` to apply Home Manager changes:
 
 ```bash
 # Install a single tool
@@ -187,7 +187,7 @@ After editing, apply changes:
 
 ```bash
 # Apply Home Manager changes
-userup
+nixup
 
 # Install all configured tools
 eget --download-all
@@ -245,7 +245,7 @@ This means the binary wasn't patched. The wrapper script should handle this auto
 **Solution:** Ensure the fish function is loaded:
 ```bash
 # Apply Home Manager changes
-userup
+nixup
 
 # Restart fish shell or run:
 source ~/.config/fish/config.fish

@@ -89,28 +89,147 @@
       '';
       nixup = ''
         set -l flake ~/.config/nixos
-        set -l nixos_targets (nix eval --raw $flake#nixosConfigurations \
-          --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
-        set -l home_targets (nix eval --raw $flake#homeConfigurations \
-          --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
+        set -l this_host (hostname)
 
-        if test (count $argv) -eq 0; or test $argv[1] = --list
-          echo "NixOS targets:"
-          printf '  %s\n' $nixos_targets
-          echo "Home-manager targets:"
-          printf '  %s\n' $home_targets
-          echo "Usage: nixup <target>"
+        set -l nixos_target
+        set -l home_target
+        switch $this_host
+          case thinkcentre
+            set nixos_target headless-thinkcentre
+            set home_target headless
+          case nix2505
+            set nixos_target headless-wired
+            set home_target headless
+          case dell-e7450
+            set nixos_target dell-e7450
+            set home_target desktop
+          case "*"
+            echo "nixup: unknown hostname '$this_host', cannot auto-detect targets" >&2
+            echo "Usage: nixup --list | nixup <target>" >&2
+            return 1
+        end
+
+        if test (count $argv) -gt 0
+          set -l nixos_targets (nix eval --raw $flake#nixosConfigurations \
+            --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
+          set -l home_targets (nix eval --raw $flake#homeConfigurations \
+            --apply 'x: builtins.concatStringsSep "\n" (builtins.attrNames x)' 2>/dev/null)
+
+          if test $argv[1] = --list
+            echo "NixOS targets:"
+            printf '  %s\n' $nixos_targets
+            echo "Home-manager targets:"
+            printf '  %s\n' $home_targets
+            echo "Usage: nixup [target]  (no args = detect uncommitted changes)"
+            return 0
+          end
+
+          set -l target $argv[1]
+          if contains -- $target $nixos_targets
+            sudo nixos-rebuild switch --flake $flake#$target
+          else if contains -- $target $home_targets
+            home-manager switch --flake $flake#$target
+          else
+            echo "nixup: unknown target '$target' (run nixup --list)" >&2
+            return 1
+          end
           return 0
         end
 
-        set -l target $argv[1]
-        if contains -- $target $nixos_targets
-          sudo nixos-rebuild switch --flake $flake#$target
-        else if contains -- $target $home_targets
-          home-manager switch --flake $flake#$target
-        else
-          echo "nixup: unknown target '$target' (run nixup --list)" >&2
+        if not git -C $flake rev-parse --is-inside-work-tree >/dev/null 2>&1
+          echo "nixup: $flake is not a git repo" >&2
           return 1
+        end
+
+        set -l files
+        for line in (git -C $flake status --porcelain --untracked-files=all)
+          set -l f (string sub --start=4 -- $line)
+          if string match -q "* -> *" -- $f
+            set f (string split -r -m1 " -> " -- $f)[2]
+          end
+          set -a files $f
+        end
+
+        if test (count $files) -eq 0
+          echo "nixup: no uncommitted changes in $flake"
+          return 0
+        end
+
+        set -l do_nixos 0
+        set -l do_home 0
+        set -l skipped
+        for f in $files
+          if test $f = flake.nix; or test $f = flake.lock
+            set do_nixos 1
+            set do_home 1
+            continue
+          end
+          set -l host ""
+          switch $f
+            case "nixos-dell-e7450.nix" "hardware-dell-e7450.nix"
+              set host dell-e7450
+            case "nixos-headless-wired.nix" "hardware-headless-wired.nix"
+              set host headless-wired
+            case "nixos-headless-thinkcentre.nix" "hardware-headless-thinkcentre.nix"
+              set host headless-thinkcentre
+            case "nixos-base.nix"
+              set host ALL
+          end
+          if test -n "$host"
+            if test $host = ALL; or test $host = $nixos_target
+              set do_nixos 1
+            else
+              set -a skipped "$host (NixOS)"
+            end
+            continue
+          end
+          switch $f
+            case "home-desktop.nix"
+              set host desktop
+            case "home-headless.nix"
+              set host headless
+            case "*"
+              set host BOTH
+          end
+          if test $host = BOTH; or test $host = $home_target
+            set do_home 1
+          else
+            set -a skipped "$host (home-manager)"
+          end
+        end
+
+        set -l cmds
+        if test $do_nixos -eq 1
+          set -a cmds "sudo nixos-rebuild switch --flake $flake#$nixos_target"
+        end
+        if test $do_home -eq 1
+          set -a cmds "home-manager switch --flake $flake#$home_target"
+        end
+
+        echo "Uncommitted changes:"
+        printf '  %s\n' $files
+        echo
+        if test (count $skipped) -gt 0
+          echo "Affecting other hosts (skipped): "(string join ", " $skipped)
+          echo
+        end
+
+        if test (count $cmds) -eq 0
+          echo "Nothing to rebuild on this host ($this_host)."
+          return 0
+        end
+
+        echo "Will run on $this_host:"
+        printf '  %s\n' $cmds
+        echo "Run? [y/N]"
+        read -l confirm
+        if not test "$confirm" = y; and not test "$confirm" = Y
+          echo "Aborted."
+          return 1
+        end
+        for c in $cmds
+          echo "==> $c"
+          eval $c; or return 1
         end
       '';
       eget = ''
@@ -197,6 +316,7 @@
     ranger
     rclone
     ripgrep
+    treemd
     wiper
     wtfutil
     yt-dlp
