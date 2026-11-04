@@ -17,6 +17,8 @@
   # For example, set IPv4 address to "192.168.1.82", etc.
   networking.networkmanager.enable = true;
 
+  networking.bridges.br0.interfaces = [ "eno1" ];
+
   # No system-wide proxy. Use `pon`/`poff` in fish shells to toggle it per session.
   # The nix daemon keeps the proxy so substituter downloads still work.
   systemd.services.nix-daemon.environment = {
@@ -117,9 +119,6 @@
     defaultNetwork.settings.dns_enabled = true;    
   };
 
-  # mlops-demo VM host support (managed by ~/docs/mlops-demo, see its README).
-  # Only generic libvirt infra lives here; DNAT/NAT rules are applied imperatively
-  # by ~/docs/mlops-demo/scripts/nat.sh (vm.sh start + libvirt network hook).
   virtualisation.libvirtd = {
     enable = true;
     # guests: graceful shutdown on host shutdown; never auto-started/restored on boot
