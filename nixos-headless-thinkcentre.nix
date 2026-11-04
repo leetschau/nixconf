@@ -16,8 +16,52 @@
   # Configure network connections interactively with nmcli or nmtui.
   # For example, set IPv4 address to "192.168.1.82", etc.
   networking.networkmanager.enable = true;
+  # Never auto-create "Wired connection N" DHCP profiles — every NIC here is
+  # deliberately profiled (eno1 = port of br0). Kills the boot-time DHCP race.
+  networking.networkmanager.settings.main.no-auto-default = "*";
 
-  networking.bridges.br0.interfaces = [ "eno1" ];
+  # Wired LAN bridge: NM owns the br0 lifecycle; eno1 is the port; host IP lives on br0.
+  # VMs attach to br0 (libvirt <interface type='bridge'><source bridge='br0'/>) for direct LAN presence.
+  # NOTE: profiles are written to /run at each boot — edit HERE, not via nmcli.
+  networking.networkmanager.ensureProfiles.profiles = {
+    br0 = {
+      connection = {
+        id = "br0";
+        uuid = "a9bb6879-5bcb-415f-abcd-d7d537997ff7";
+        type = "bridge";
+        interface-name = "br0";
+      };
+      bridge = {
+        stp = "false";
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "192.168.1.83/24";
+        gateway = "192.168.1.1";
+        dns = "192.168.1.1;223.5.5.5;";
+      };
+      ipv6 = {
+        method = "auto";
+        addr-gen-mode = "default";
+      };
+    };
+    eno1 = {
+      connection = {
+        id = "eno1";
+        uuid = "6c5f0568-3b9e-4676-bbe6-1b689de40fe0";
+        type = "ethernet";
+        interface-name = "eno1";
+        controller = "br0";
+        port-type = "bridge";
+      };
+      ethernet = {
+        mac-address = "30:9C:23:37:60:6F";
+      };
+    };
+  };
+
+
+
 
   # No system-wide proxy. Use `pon`/`poff` in fish shells to toggle it per session.
   # The nix daemon keeps the proxy so substituter downloads still work.
