@@ -68,7 +68,7 @@
       op = "rifle";
       py = "python3";
       ra = "ranger";
-      wtf = "wtfutil";
+      # wtf = "wtfutil";
       zl = "zellij";
     };
     functions = {
@@ -294,33 +294,33 @@
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     age
     bat
-    bc
-    dos2unix
+    # bc
+    # dos2unix
     eget
     fd
     file
-    gemini-cli
+    # gemini-cli
     gh
     hack-font
-    htop
-    jid
-    jless
+    # htop
+    # jid
+    # jless
     jq
-    mdcat
-    nettools
+    # mdcat
+    # nettools
     nodejs
     opencode
-    p7zip
+    # p7zip
     patchelf
     pet
     ranger
     rclone
     ripgrep
-    treemd
-    wiper
-    wtfutil
+    # treemd
+    # wiper
+    # wtfutil
     yt-dlp
-    zip
+    # zip
   ];
 
   xdg.configFile."ranger/rifle.conf".source = ./rifle.conf;

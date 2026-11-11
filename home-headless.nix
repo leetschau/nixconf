@@ -4,21 +4,21 @@
   ];
 
   home.packages = with pkgs; [
-    fx
-    google-cloud-sdk
-    gping
-    hyperfine
-    mamba
-    miller
+    # fx
+    # google-cloud-sdk
+    # gping
+    # hyperfine
+    # mamba
+    # miller
     mise
-    navi
+    # navi
     podman
     podman-compose
-    podman-tui
-    tldr
+    # podman-tui
+    # tldr
     uv
-    visidata
-    xan
+    # visidata
+    # xan
   ];
 
   programs.fish = {
@@ -27,7 +27,7 @@
       pdc = "podman-compose";
       docker = "podman";
       va = "vagrant";
-      gemini = "pon; gemini";
+      # gemini = "pon; gemini";
     };
   };
 }
